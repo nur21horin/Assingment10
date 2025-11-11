@@ -14,7 +14,11 @@ const Errorpage = () => {
       <p className="text-gray-600 mb-6">
         The page you are looking for doesn't exist or has been moved.
       </p>
-      
+      <Link to="/">
+        <button className="px-6 py-3 bg-green-600 text-white font-semibold rounded-md hover:bg-green-800 transition">
+          Back to Home
+        </button>
+      </Link>
     </div>
     </div>
   )
