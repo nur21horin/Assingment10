@@ -17,9 +17,9 @@ const Navbar = () => {
           {/* Logo */}
           <Link
             to="/"
-            className="flex items-center gap-2 font-bold text-blue-800 text-xl  hover:opacity-80 "
+            className="flex items-center gap-2 font-bold text-green-800 text-xl  hover:opacity-80 "
           ><UtensilsCrossed className="w-6 h-6" />
-            <span className=" font-bold text-2xl text-blue-800  ">PlateShare</span>
+            <span className=" font-bold text-2xl text-green-800  ">PlateShare</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -73,7 +73,7 @@ const Navbar = () => {
               </>
             ) : (
               <Link to="/login">
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                <button className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-800 transition-colors">
                   Login
                 </button>
               </Link>
@@ -141,7 +141,7 @@ const Navbar = () => {
               </>
             ) : (
               <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
-                <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                <button className="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-800 transition-colors">
                   Login
                 </button>
               </Link>
