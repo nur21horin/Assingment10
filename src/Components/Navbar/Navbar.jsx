@@ -1,29 +1,25 @@
 import { Link } from "react-router-dom";
 import { UtensilsCrossed, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { use, useState } from "react";
+import { AuthContext } from "../../context/Authcontext";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-//   // TODO: Replace with actual auth state
-const isLoggedIn = false;
-  const user = {
-    name: "John Doe",
-    email: "john@example.com",
-    image: "",
-  };
+  const { createUser, signInUser, signInGoogle, user, loading } =
+    use(AuthContext);
+  //   // TODO: Replace with actual auth state
+  const isLoggedIn = false;
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b shadow-sm">
-      <div className="container mx-auto px-4">
+    <nav className=" w-full bg-white shadow-sm z-50">
+      <div className="w-full  px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link
             to="/"
-            classNames="flex items-center gap-2 font-bold text-xl text-blue-600 hover:opacity-80 transition-opacity"
-          >
-            
-            <span>PlateShare</span>
+            className="flex items-center gap-2 font-bold text-blue-800 text-xl  hover:opacity-80 "
+          ><UtensilsCrossed className="w-6 h-6" />
+            <span className=" font-bold text-2xl text-blue-800  ">PlateShare</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -35,7 +31,7 @@ const isLoggedIn = false;
               Home
             </Link>
             <Link
-              to="/available-foods"
+              to="/availablefoods"
               className="text-gray-800 hover:text-blue-600 transition-colors font-medium"
             >
               Available Foods
@@ -86,7 +82,7 @@ const isLoggedIn = false;
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2"
+            className="md:hidden text-blue-800 p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -109,7 +105,7 @@ const isLoggedIn = false;
               Home
             </Link>
             <Link
-              to="/available-foods"
+              to="/'availablefoods'"
               className="block py-2 text-gray-800 hover:text-blue-600 transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
