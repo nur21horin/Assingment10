@@ -1,25 +1,40 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigation } from "react-router-dom";
 import { UtensilsCrossed, Menu, X } from "lucide-react";
-import { use, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/Authcontext";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { createUser, signInUser, signInGoogle, user, loading } =
-    use(AuthContext);
-  //   // TODO: Replace with actual auth state
-  const isLoggedIn = false;
+  const { user,  LogOut } = useContext(AuthContext); // assuming you have logOut in your context
+  const navigate=useNavigation();
+  const isLoggedIn = !!user;
+
+  const handleLogOut = () => {
+     LogOut()
+     .then(()=>{
+      toast.success("Logged out successfully!");
+      navigate("/");
+     })
+     .catch((err)=>{
+      console.log(err);
+      toast.error("Logout failed! Try again!")
+     })
+  };
 
   return (
-    <nav className=" w-full bg-white shadow-sm z-50">
-      <div className="w-full  px-4">
+    <nav className="w-full bg-white shadow-sm z-50">
+      <div className="w-full px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link
             to="/"
-            className="flex items-center gap-2 font-bold text-green-800 text-xl  hover:opacity-80 "
-          ><UtensilsCrossed className="w-6 h-6" />
-            <span className=" font-bold text-2xl text-green-800  ">PlateShare</span>
+            className="flex items-center gap-2 font-bold text-green-800 text-xl hover:opacity-80"
+          >
+            <UtensilsCrossed className="w-6 h-6" />
+            <span className="font-bold text-2xl text-green-800">
+              PlateShare
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -58,15 +73,23 @@ const Navbar = () => {
                   My Food Requests
                 </Link>
 
-                {/* Simple user display */}
+                {/* User Avatar */}
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">
-                    {user.name
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </div>
-                  <button className="text-red-600 font-medium hover:underline">
+                  {user?.photoURL ? (
+                    <img
+                      src={user.photoURL}
+                      alt="User avatar"
+                      className="w-9 h-9 rounded-full border"
+                    />
+                  ) : (
+                    <div className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">
+                      {user?.email?.[0]?.toUpperCase()}
+                    </div>
+                  )}
+                  <button
+                    onClick={handleLogOut}
+                    className="text-red-600 font-medium hover:underline"
+                  >
                     Logout
                   </button>
                 </div>
@@ -86,11 +109,7 @@ const Navbar = () => {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
@@ -105,7 +124,7 @@ const Navbar = () => {
               Home
             </Link>
             <Link
-              to="/'availablefoods'"
+              to="/availablefoods"
               className="block py-2 text-gray-800 hover:text-blue-600 transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -135,7 +154,10 @@ const Navbar = () => {
                 >
                   My Food Requests
                 </Link>
-                <button className="w-full text-left py-2 text-red-600 font-medium hover:underline">
+                <button
+                  onClick={handleLogOut}
+                  className="w-full text-left py-2 text-red-600 font-medium hover:underline"
+                >
                   Logout
                 </button>
               </>
