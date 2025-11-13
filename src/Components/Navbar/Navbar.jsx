@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, LogOut } = useContext(AuthContext); // assuming you have logOut in your context
+  const { user, LogOut } = useContext(AuthContext);
   const navigate = useNavigation();
   const isLoggedIn = !!user;
 
