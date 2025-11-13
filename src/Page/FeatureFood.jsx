@@ -83,7 +83,6 @@ const FeaturedFoods = () => {
                 </div>
               </div>
 
-              {/* Content */}
               <div className="p-5 space-y-3">
                 <h3 className="font-bold text-lg text-gray-800">
                   {food.food_name}
@@ -112,7 +111,6 @@ const FeaturedFoods = () => {
                 </div>
               </div>
 
-              {/* Footer Button */}
               <div className="p-5 pt-0">
                 <button
                   onClick={() =>
@@ -127,7 +125,7 @@ const FeaturedFoods = () => {
           ))}
         </div>
 
-        {/* Show All Button */}
+      
         <div className="text-center mt-12">
           <Link to="/availablefoods">
             <button className="border border-blue-600 text-blue-600 px-6 py-2 rounded-md hover:bg-blue-600 hover:text-white transition">

@@ -9,7 +9,7 @@ const Register = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // ✅ Google Sign-In moved outside
+  
   const handleGoogleSignIn = () => {
     signInGoogle()
       .then((res) => {
@@ -31,7 +31,7 @@ const Register = () => {
     const password = e.target.password.value;
     const password1 = e.target.password1.value;
 
-    // 🔐 Password validation
+ 
     if (!/[A-Z]/.test(password)) {
       setError("Password must contain at least one uppercase letter.");
       return;
@@ -47,7 +47,6 @@ const Register = () => {
       return;
     }
 
-    // ✅ Create user
     createUser(email, password)
       .then((res) => {
         console.log("User created: ", res.user);
@@ -67,7 +66,7 @@ const Register = () => {
       <h1 className="text-2xl text-green-600 font-bold mb-4">Register Now</h1>
       <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
         <div className="card-body">
-          {/* ✅ Changed to form, not fieldset */}
+          
           <form onSubmit={handleRegister} className="fieldset">
             <label className="label">Name</label>
             <input
@@ -128,10 +127,9 @@ const Register = () => {
             </div>
           </form>
 
-          {/* ✅ Google login button works now */}
           <button
             onClick={handleGoogleSignIn}
-            className="btn bg-white text-black border-[#e5e5e5] mt-3 flex items-center justify-center"
+            className="btn bg-green-500 text-black border-[#e5e5e5] mt-3 flex items-center justify-center"
           >
             <img
               src="https://www.svgrepo.com/show/475656/google-color.svg"
