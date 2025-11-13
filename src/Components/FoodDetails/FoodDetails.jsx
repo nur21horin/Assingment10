@@ -26,14 +26,16 @@ const FoodDetails = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const resFood = await fetch(`http://localhost:3000/foods/${id}`);
+        const resFood = await fetch(
+          `https://my-project-server-side-plateshare.vercel.app/foods/${id}`
+        );
         if (!resFood.ok) throw new Error("Failed to fetch food");
         const foodData = await resFood.json();
         setFood(foodData);
 
         if (foodData.donator_email === user.email) {
           const resReq = await fetch(
-            `http://localhost:3000/requests/food/${id}`
+            `https://my-project-server-side-plateshare.vercel.app/requests/food/${id}`
           );
           const reqData = await resReq.json();
           setRequests(reqData);
@@ -51,7 +53,6 @@ const FoodDetails = () => {
     fetchData();
   }, [id, user, navigate, refresh]);
 
-
   const handleStatusUpdate = async (requestId, newStatus) => {
     try {
       const confirmed = window.confirm(
@@ -59,11 +60,14 @@ const FoodDetails = () => {
       );
       if (!confirmed) return;
 
-      const res = await fetch(`http://localhost:3000/requests/${requestId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
-      });
+      const res = await fetch(
+        `https://my-project-server-side-plateshare.vercel.app/requests/${requestId}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: newStatus }),
+        }
+      );
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
@@ -167,11 +171,21 @@ const FoodDetails = () => {
                             : ""
                         }`}
                       >
-                        <td className="p-2 text-gray-600 border">{req.user_name}</td>
-                        <td className="p-2 text-gray-600 border">{req.user_email}</td>
-                        <td className="p-2 text-gray-600 border">{req.location}</td>
-                        <td className="p-2 text-gray-600 border">{req.reason}</td>
-                        <td className="p-2 text-gray-600 border">{req.contact}</td>
+                        <td className="p-2 text-gray-600 border">
+                          {req.user_name}
+                        </td>
+                        <td className="p-2 text-gray-600 border">
+                          {req.user_email}
+                        </td>
+                        <td className="p-2 text-gray-600 border">
+                          {req.location}
+                        </td>
+                        <td className="p-2 text-gray-600 border">
+                          {req.reason}
+                        </td>
+                        <td className="p-2 text-gray-600 border">
+                          {req.contact}
+                        </td>
                         <td className="p-2  text-gray-600 border font-semibold">
                           {req.status}
                         </td>

@@ -13,14 +13,18 @@ const MyRequests = () => {
 
     const fetchRequests = async () => {
       try {
-        const res = await fetch(`http://localhost:3000/requests/${user.email}`);
+        const res = await fetch(
+          `https://my-project-server-side-plateshare.vercel.app/requests/${user.email}`
+        );
         if (!res.ok) throw new Error("Failed to fetch requests");
         const data = await res.json();
 
         const requestsWithFood = await Promise.all(
           data.map(async (req) => {
             try {
-              const foodRes = await fetch(`http://localhost:3000/foods/${req.food_id}`);
+              const foodRes = await fetch(
+                `https://my-project-server-side-plateshare.vercel.app/foods/${req.food_id}`
+              );
               if (!foodRes.ok) return { ...req, foodDetails: null };
               const foodData = await foodRes.json();
               return { ...req, foodDetails: foodData };
@@ -43,12 +47,16 @@ const MyRequests = () => {
   }, [user]);
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this request?")) return;
+    if (!window.confirm("Are you sure you want to delete this request?"))
+      return;
 
     try {
-      const res = await fetch(`http://localhost:3000/requests/${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `https://my-project-server-side-plateshare.vercel.app/requests/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (!res.ok) throw new Error("Failed to delete request");
 
       setRequests(requests.filter((req) => req._id !== id));
@@ -87,7 +95,6 @@ const MyRequests = () => {
               key={req._id}
               className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300"
             >
-              
               <div className="h-48 w-full overflow-hidden rounded-t-3xl">
                 {food.food_image ? (
                   <img
@@ -110,7 +117,8 @@ const MyRequests = () => {
                   Pickup: {food.pickup_location || "N/A"}
                 </p>
                 <p className="text-gray-500 text-sm">
-                  Requested On: {new Date(req.requested_at).toLocaleDateString()}
+                  Requested On:{" "}
+                  {new Date(req.requested_at).toLocaleDateString()}
                 </p>
 
                 <span

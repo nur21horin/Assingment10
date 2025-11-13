@@ -22,9 +22,12 @@ const ManageMyFoods = () => {
     setLoading(true);
     try {
       const token = await user.getIdToken();
-      const res = await fetch(`http://localhost:3000/my-foods/${user.email}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        `https://my-project-server-side-plateshare.vercel.app/my-foods/${user.email}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const data = await res.json();
       setMyFoods(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -42,10 +45,13 @@ const ManageMyFoods = () => {
     if (!window.confirm("Are you sure you want to delete this food?")) return;
     try {
       const token = await user.getIdToken();
-      const res = await fetch(`http://localhost:3000/foods/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        `https://my-project-server-side-plateshare.vercel.app/foods/${id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       if (!res.ok) throw new Error("Failed to delete food");
       setMyFoods(myFoods.filter((food) => food._id !== id));
       toast.success("Food item deleted successfully");
@@ -78,7 +84,9 @@ const ManageMyFoods = () => {
 
     try {
       const res = await fetch(
-        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
+        `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_IMGBB_API_KEY
+        }`,
         {
           method: "POST",
           body: formData,
@@ -96,14 +104,17 @@ const ManageMyFoods = () => {
     e.preventDefault();
     try {
       const token = await user.getIdToken();
-      const res = await fetch(`http://localhost:3000/foods/${editingFood}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(form),
-      });
+      const res = await fetch(
+        `https://my-project-server-side-plateshare.vercel.app/foods/${editingFood}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(form),
+        }
+      );
       if (!res.ok) throw new Error("Failed to update food");
 
       setMyFoods(

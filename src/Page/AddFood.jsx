@@ -31,7 +31,9 @@ const AddFood = () => {
 
     try {
       const res = await fetch(
-        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
+        `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_IMGBB_API_KEY
+        }`,
         {
           method: "POST",
           body: formData,
@@ -73,14 +75,17 @@ const AddFood = () => {
         donator_image: user.photoURL,
       };
 
-      const res = await fetch("http://localhost:3000/foods", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(foodData),
-      });
+      const res = await fetch(
+        "https://my-project-server-side-plateshare.vercel.app/foods",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(foodData),
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to add food");
 
@@ -105,7 +110,7 @@ const AddFood = () => {
   return (
     <section className="max-w-xl mx-auto bg-white shadow-2xl rounded-3xl p-10 mt-12 border border-gray-100">
       <div className="text-center mb-8">
-      <ToastContainer></ToastContainer>
+        <ToastContainer></ToastContainer>
         <h2 className="text-4xl font-extrabold text-green-600 mb-2">
           Add New Food
         </h2>

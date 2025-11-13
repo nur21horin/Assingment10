@@ -12,13 +12,15 @@ const FeaturedFoods = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:3000/foods")
+    fetch("https://my-project-server-side-plateshare.vercel.app/foods")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch foods");
         return res.json();
       })
       .then((data) => {
-        const availableFoods = data.filter((f) => f.food_status === "Available");
+        const availableFoods = data.filter(
+          (f) => f.food_status === "Available"
+        );
         const sortedFoods = availableFoods.sort((a, b) => {
           const aDate = a.createdAt ? new Date(a.createdAt) : new Date();
           const bDate = b.createdAt ? new Date(b.createdAt) : new Date();
@@ -57,7 +59,9 @@ const FeaturedFoods = () => {
           <span className="text-sm font-semibold bg-blue-100 text-blue-700 px-4 py-1 rounded-full">
             Featured Foods
           </span>
-          <h2 className="text-4xl font-bold mt-4 text-gray-800">Available Now</h2>
+          <h2 className="text-4xl font-bold mt-4 text-gray-800">
+            Available Now
+          </h2>
           <p className="text-gray-500 mt-2 max-w-2xl mx-auto">
             These generous community members are sharing their surplus food.
             Grab yours before it's gone!
@@ -72,7 +76,10 @@ const FeaturedFoods = () => {
             >
               <div className="relative h-48 overflow-hidden">
                 <img
-                  src={food.food_image || "https://via.placeholder.com/400x300?text=No+Image"}
+                  src={
+                    food.food_image ||
+                    "https://via.placeholder.com/400x300?text=No+Image"
+                  }
                   alt={food.food_name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
@@ -82,7 +89,9 @@ const FeaturedFoods = () => {
               </div>
 
               <div className="p-5 space-y-3">
-                <h3 className="font-bold text-lg text-gray-800">{food.food_name}</h3>
+                <h3 className="font-bold text-lg text-gray-800">
+                  {food.food_name}
+                </h3>
                 <div className="text-sm text-gray-500">
                   <p>By: {food.donator_name}</p>
                 </div>
@@ -108,7 +117,9 @@ const FeaturedFoods = () => {
 
               <div className="p-5 pt-0">
                 <button
-                  onClick={() => (user ? navigate(`/food/${food._id}`) : navigate("/login"))}
+                  onClick={() =>
+                    user ? navigate(`/food/${food._id}`) : navigate("/login")
+                  }
                   className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
                 >
                   View Details

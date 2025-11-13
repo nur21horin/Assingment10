@@ -25,14 +25,17 @@ const RequestFood = ({ foodId }) => {
 
       console.log("Sending request:", requestBody);
 
-      const res = await fetch("http://localhost:3000/requests", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token ? `Bearer ${token}` : undefined,
-        },
-        body: JSON.stringify(requestBody),
-      });
+      const res = await fetch(
+        "https://my-project-server-side-plateshare.vercel.app/requests",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : undefined,
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to request food");
@@ -40,23 +43,22 @@ const RequestFood = ({ foodId }) => {
       toast.success(" Food requested successfully!");
     } catch (error) {
       console.error("Request error:", error);
-      
     } finally {
       setLoading(false);
     }
   };
 
   return (
-   <div>
-     <button
-      onClick={handleRequest}
-      disabled={loading}
-      className="mt-6 w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
-    >
-      {loading ? "Requesting..." : "Request Food"}
-    </button>
-    <ToastContainer/>
-   </div>
+    <div>
+      <button
+        onClick={handleRequest}
+        disabled={loading}
+        className="mt-6 w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
+      >
+        {loading ? "Requesting..." : "Request Food"}
+      </button>
+      <ToastContainer />
+    </div>
   );
 };
 

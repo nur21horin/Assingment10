@@ -14,13 +14,15 @@ const AvailableFoods = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:3000/foods")
+    fetch("https://my-project-server-side-plateshare.vercel.app/foods")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch foods");
         return res.json();
       })
       .then((data) => {
-        const availableFoods = data.filter((f) => f.food_status === "Available");
+        const availableFoods = data.filter(
+          (f) => f.food_status === "Available"
+        );
         setFoods(availableFoods);
         setFilteredFoods(availableFoods);
         setLoading(false);
@@ -100,7 +102,6 @@ const AvailableFoods = () => {
             Grab yours before it's gone!
           </p>
         </div>
-
 
         <div className="max-w-md mx-auto mb-10 relative text-black">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
