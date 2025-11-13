@@ -34,7 +34,7 @@ const MyRequests = () => {
 
       {requests.length === 0 ? (
         <p className="text-gray-500 text-center">
-          You haven’t requested any food yet.
+          You haven't requested any food yet.
         </p>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
