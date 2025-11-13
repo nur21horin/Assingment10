@@ -30,7 +30,7 @@ const RequestFoodModal = ({ food }) => {
         status: "Pending",
       };
       const res = await fetch(
-        "https://my-project-server-side-plateshare.vercel.app/requests",
+        "https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//requests",
         {
           method: "POST",
           headers: {

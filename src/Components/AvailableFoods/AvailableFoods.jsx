@@ -14,25 +14,41 @@ const AvailableFoods = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://my-project-server-side-plateshare.vercel.app/foods")
-      .then((res) => {
+    const fetchFoods = async () => {
+      try {
+        let token = "";
+        if (user) {
+          token = await user.getIdToken();
+        }
+
+        const res = await fetch(
+         
+          "https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app/foods",
+          {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          }
+        );
+
         if (!res.ok) throw new Error("Failed to fetch foods");
-        return res.json();
-      })
-      .then((data) => {
+
+        const data = await res.json();
         const availableFoods = data.filter(
           (f) => f.food_status === "Available"
         );
         setFoods(availableFoods);
         setFilteredFoods(availableFoods);
-        setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error(err);
         setError("Something went wrong while fetching foods.");
+      } finally {
         setLoading(false);
-      });
-  }, []);
+      }
+    };
+
+    fetchFoods();
+  }, [user]);
 
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
@@ -89,7 +105,6 @@ const AvailableFoods = () => {
   return (
     <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Header */}
         <div className="text-center mb-12">
           <span className="text-sm font-semibold bg-blue-100 text-blue-700 px-4 py-1 rounded-full">
             Featured Foods
@@ -123,7 +138,6 @@ const AvailableFoods = () => {
                 key={food._id}
                 className="bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group"
               >
-                {/* Image */}
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src={food.food_image}
@@ -139,11 +153,9 @@ const AvailableFoods = () => {
                   <h3 className="font-bold text-lg text-gray-800">
                     {food.food_name}
                   </h3>
-
                   <div className="text-sm text-gray-500">
                     <p>By: {food.donator_name}</p>
                   </div>
-
                   <div className="space-y-2 text-sm text-gray-600">
                     <p className="flex items-center gap-2">
                       <Users className="h-4 w-4 text-blue-600" />

@@ -23,7 +23,7 @@ const ManageMyFoods = () => {
     try {
       const token = await user.getIdToken();
       const res = await fetch(
-        `https://my-project-server-side-plateshare.vercel.app/my-foods/${user.email}`,
+        `https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//my-foods/${user.email}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -46,7 +46,7 @@ const ManageMyFoods = () => {
     try {
       const token = await user.getIdToken();
       const res = await fetch(
-        `https://my-project-server-side-plateshare.vercel.app/foods/${id}`,
+        `https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//foods/${id}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -105,7 +105,7 @@ const ManageMyFoods = () => {
     try {
       const token = await user.getIdToken();
       const res = await fetch(
-        `https://my-project-server-side-plateshare.vercel.app/foods/${editingFood}`,
+        `https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//foods/${editingFood}`,
         {
           method: "PUT",
           headers: {

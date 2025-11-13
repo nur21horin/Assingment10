@@ -27,7 +27,7 @@ const FoodDetails = () => {
       try {
         setLoading(true);
         const resFood = await fetch(
-          `https://my-project-server-side-plateshare.vercel.app/foods/${id}`
+          `https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//foods/${id}`
         );
         if (!resFood.ok) throw new Error("Failed to fetch food");
         const foodData = await resFood.json();
@@ -35,7 +35,7 @@ const FoodDetails = () => {
 
         if (foodData.donator_email === user.email) {
           const resReq = await fetch(
-            `https://my-project-server-side-plateshare.vercel.app/requests/food/${id}`
+            `https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//requests/food/${id}`
           );
           const reqData = await resReq.json();
           setRequests(reqData);
@@ -61,7 +61,7 @@ const FoodDetails = () => {
       if (!confirmed) return;
 
       const res = await fetch(
-        `https://my-project-server-side-plateshare.vercel.app/requests/${requestId}`,
+        `https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//requests/${requestId}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
