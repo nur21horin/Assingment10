@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer className="w-full bg-white border-t border-gray-200 py-8">
       <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-8">
-        {/* Logo & Description */}
+       
         <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
           <Link to="/" className="flex items-center font-bold text-xl text-gray-800">
             <UtensilsCrossed className="w-6 h-6" />
@@ -19,7 +19,6 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Quick Links */}
         <div className="flex flex-col items-center sm:items-start">
           <h3 className="font-semibold text-gray-800 mb-2">Quick Links</h3>
           <ul className="flex flex-col space-y-1 text-sm text-gray-600">
@@ -35,7 +34,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Social Media */}
         <div className="flex flex-col items-center sm:items-start">
           <h3 className="font-semibold text-gray-800 mb-2">Connect With Us</h3>
           <div className="flex gap-4">
@@ -55,7 +53,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Copyright */}
       <div className="text-center mt-8 text-sm text-gray-500">
         &copy; {currentYear} PlateShare. All rights reserved.
       </div>

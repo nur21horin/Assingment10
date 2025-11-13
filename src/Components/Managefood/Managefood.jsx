@@ -21,11 +21,14 @@ const ManageMyFoods = () => {
     if (!user) return;
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:3000/my-foods/${user.email}`);
+      const token = await user.getIdToken();
+      const res = await fetch(`http://localhost:3000/my-foods/${user.email}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const data = await res.json();
-      setMyFoods(data);
+      setMyFoods(Array.isArray(data) ? data : []);
     } catch (error) {
-      console.error("Failed to fetch foods:", error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -38,8 +41,10 @@ const ManageMyFoods = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this food?")) return;
     try {
+      const token = await user.getIdToken();
       const res = await fetch(`http://localhost:3000/foods/${id}`, {
         method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error("Failed to delete food");
       setMyFoods(myFoods.filter((food) => food._id !== id));
@@ -73,9 +78,7 @@ const ManageMyFoods = () => {
 
     try {
       const res = await fetch(
-        `https://api.imgbb.com/1/upload?key=${
-          import.meta.env.VITE_IMGBB_API_KEY
-        }`,
+        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
         {
           method: "POST",
           body: formData,
@@ -84,7 +87,7 @@ const ManageMyFoods = () => {
       const data = await res.json();
       setForm({ ...form, food_image: data.data.url });
     } catch (error) {
-      console.error("Image upload failed:", error);
+      console.error(error);
       toast.error("Image upload failed");
     }
   };
@@ -92,9 +95,13 @@ const ManageMyFoods = () => {
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     try {
+      const token = await user.getIdToken();
       const res = await fetch(`http://localhost:3000/foods/${editingFood}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(form),
       });
       if (!res.ok) throw new Error("Failed to update food");
@@ -167,7 +174,6 @@ const ManageMyFoods = () => {
         </div>
       )}
 
-      {/* Edit Modal */}
       {editingFood && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 px-4 z-50 overflow-auto">
           <form
@@ -178,7 +184,6 @@ const ManageMyFoods = () => {
               Update Food
             </h3>
 
-           
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Food Name
@@ -194,7 +199,6 @@ const ManageMyFoods = () => {
               />
             </div>
 
-            {/* Food Image */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Upload Food Image
@@ -213,7 +217,6 @@ const ManageMyFoods = () => {
               )}
             </div>
 
-            {/* Quantity */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Quantity
@@ -229,7 +232,6 @@ const ManageMyFoods = () => {
               />
             </div>
 
-            {/* Location */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Pickup Location
@@ -245,7 +247,6 @@ const ManageMyFoods = () => {
               />
             </div>
 
-            {/*Date */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Expiration Date
@@ -260,7 +261,6 @@ const ManageMyFoods = () => {
               />
             </div>
 
-            {/*Notes */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Additional Notes
@@ -271,7 +271,7 @@ const ManageMyFoods = () => {
                 onChange={handleChange}
                 placeholder="Any special instructions?"
                 rows="3"
-                className="border text-gray-700 border-gray-300 rounded-xl p-3 w-full  focus:ring-2 focus:ring-green-400 focus:outline-none transition"
+                className="border text-gray-700 border-gray-300 rounded-xl p-3 w-full focus:ring-2 focus:ring-green-400 focus:outline-none transition"
               />
             </div>
 

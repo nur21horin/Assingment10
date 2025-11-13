@@ -13,7 +13,6 @@ const AvailableFoods = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Fetch food data
   useEffect(() => {
     fetch("http://localhost:3000/foods")
       .then((res) => {
@@ -33,7 +32,6 @@ const AvailableFoods = () => {
       });
   }, []);
 
-  // Handle Search
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
@@ -43,7 +41,6 @@ const AvailableFoods = () => {
     setFilteredFoods(filtered);
   };
 
-  // Handle Share
   const handleShare = async (food) => {
     const foodUrl = `${window.location.origin}/food/${food._id}`;
     try {
@@ -63,7 +60,6 @@ const AvailableFoods = () => {
     }
   };
 
-  //  View Details
   const handleViewDetails = (id) => {
     if (!user) {
       navigate("/login");
@@ -105,7 +101,7 @@ const AvailableFoods = () => {
           </p>
         </div>
 
-        {/* Search Bar */}
+
         <div className="max-w-md mx-auto mb-10 relative text-black">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
@@ -117,7 +113,6 @@ const AvailableFoods = () => {
           />
         </div>
 
-        {/* Food Cards */}
         {filteredFoods.length === 0 ? (
           <p className="text-center text-gray-600">No foods found.</p>
         ) : (
@@ -139,7 +134,6 @@ const AvailableFoods = () => {
                   </div>
                 </div>
 
-                {/* Content */}
                 <div className="p-5 space-y-3">
                   <h3 className="font-bold text-lg text-gray-800">
                     {food.food_name}
@@ -168,7 +162,6 @@ const AvailableFoods = () => {
                   </div>
                 </div>
 
-                {/* Footer Buttons */}
                 <div className="p-5 pt-0 flex gap-3">
                   <button
                     onClick={() => handleViewDetails(food._id)}

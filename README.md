@@ -1,3 +1,58 @@
+# PlateShare - Community Food Sharing Platform
+
+PlateShare is a full-stack MERN application that allows users to share their surplus food with the community to reduce food waste. Users can post food items for donation, browse available foods, request items, and manage their own donations.
+
+---
+
+## Live Site
+[Your Live Website URL Here](#)
+
+---
+
+## Features
+
+- **User Authentication:** Firebase email/password & Google login.
+- **Add Food:** Logged-in users can add food with images hosted on imgbb.
+- **Available Foods:** Public page displaying all available foods.
+- **Food Details:** Detailed view with donor information and additional notes.
+- **Manage My Foods:** Edit or delete your added foods.
+- **Food Request System:** Users can request foods; donors can accept or reject requests.
+- **Animations:** Hero section and optional animations using AOS/Framer Motion.
+- **Responsive Design:** Works on mobile, tablet, and desktop.
+- **Error Handling:** 404 Error page and toast notifications for feedback.
+
+---
+
+## Technologies Used
+
+- **Frontend:** React, Tailwind CSS, React Router, React Toastify
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB
+- **Authentication:** Firebase
+- **Image Hosting:** imgbb
+- **Animations:** AOS / Framer Motion (optional)
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
