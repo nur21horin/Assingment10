@@ -30,7 +30,7 @@ const AddFood = () => {
 
     try {
       const res = await fetch(
-        `https://api.imgbb.com/1/upload?key=9a3b67c0f54834f6bf3e123b98af36d0`,
+        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
         {
           method: "POST",
           body: formData,
