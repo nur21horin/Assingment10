@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { MapPin, Calendar, Users } from "lucide-react";
 import Spinner from "./Spinner";
+import { AuthContext } from "../context/Authcontext";
+import Login from "../Components/Login/Login";
 
 const FeaturedFoods = () => {
+  const { user } = useContext(AuthContext);
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
   // Fetch food data
   useEffect(() => {
     fetch("http://localhost:3000/foods")
@@ -28,9 +31,7 @@ const FeaturedFoods = () => {
 
   // Loading spinner
   if (loading) {
-    return (
-      <Spinner/>
-    );
+    return <Spinner />;
   }
 
   // Error message
@@ -119,11 +120,14 @@ const FeaturedFoods = () => {
 
               {/* Footer Button */}
               <div className="p-5 pt-0">
-                <Link to={`/food/${food._id}`}>
-                  <button className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">
-                    View Details
-                  </button>
-                </Link>
+                <button
+                  onClick={() =>
+                    user ? navigate(`/food/${food._id}`) : navigate("/login")
+                  }
+                  className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+                >
+                  View Details
+                </button>
               </div>
             </div>
           ))}

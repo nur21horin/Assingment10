@@ -55,7 +55,7 @@ const Navbar = () => {
             {isLoggedIn ? (
               <>
                 <Link
-                  to="/add-food"
+                  to="/addfoods"
                   className="text-gray-800 hover:text-blue-600 transition-colors font-medium"
                 >
                   Add Food
@@ -67,7 +67,7 @@ const Navbar = () => {
                   Manage My Foods
                 </Link>
                 <Link
-                  to="/food-requests"
+                  to="/foodRequests"
                   className="text-gray-800 hover:text-blue-600 transition-colors font-medium"
                 >
                   My Food Requests
@@ -134,7 +134,7 @@ const Navbar = () => {
             {isLoggedIn ? (
               <>
                 <Link
-                  to="/add-food"
+                  to="/addfoods"
                   className="block py-2 text-gray-800 hover:text-blue-600 transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -148,7 +148,7 @@ const Navbar = () => {
                   Manage My Foods
                 </Link>
                 <Link
-                  to="/food-requests"
+                  to="/foodRequests"
                   className="block py-2 text-gray-800 hover:text-blue-600 transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >

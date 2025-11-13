@@ -12,12 +12,16 @@ import AddFood from "./Page/AddFood.jsx";
 import AvailableFoods from "./Page/AvailableFoods.jsx";
 import Login from "./Components/Login/Login.jsx";
 import Errorpage from "./Page/Errorpage.jsx";
+import FoodDetails from "./Components/FoodDetails/FoodDetails.jsx";
+import MyRequests from "./Components/MyrequestItem/MyRequestItem.jsx";
+import PrivateRoute from "./Components/Privateroute/PrivateRoute.jsx";
+import ManageMyFoods from "./Components/Managefood/Managefood.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
-    errorElement:<Errorpage/>,
+    errorElement: <Errorpage />,
     children: [
       {
         index: true,
@@ -38,6 +42,21 @@ const router = createBrowserRouter([
       {
         path: "login",
         Component: Login,
+      },
+      {
+        path: "food/:id",
+        Component: FoodDetails,
+      },
+      {
+        path: "/foodRequests",
+        element: (
+          <PrivateRoute><MyRequests></MyRequests></PrivateRoute>
+        )
+      },{
+        path:"/manage-foods",
+        element:(
+          <PrivateRoute><ManageMyFoods/></PrivateRoute>
+        )
       }
     ],
   },
