@@ -6,8 +6,6 @@ const ManageMyFoods = () => {
   const { user } = useContext(AuthContext);
   const [myFoods, setMyFoods] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  // Modal state
   const [editingFood, setEditingFood] = useState(null);
   const [form, setForm] = useState({
     food_name: "",
@@ -17,9 +15,8 @@ const ManageMyFoods = () => {
     expire_date: "",
     additional_notes: "",
   });
-  const [imagePreview, setImagePreview] = useState(""); 
+  const [imagePreview, setImagePreview] = useState("");
 
-  
   const fetchMyFoods = async () => {
     if (!user) return;
     setLoading(true);
@@ -38,7 +35,6 @@ const ManageMyFoods = () => {
     fetchMyFoods();
   }, [user]);
 
-  // Delete food
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this food?")) return;
     try {
@@ -47,31 +43,27 @@ const ManageMyFoods = () => {
       });
       if (!res.ok) throw new Error("Failed to delete food");
       setMyFoods(myFoods.filter((food) => food._id !== id));
-      toast.success("Food item deleted successfully")
+      toast.success("Food item deleted successfully");
     } catch (error) {
       console.error(error);
-      alert("Failed to delete food");
+      toast.error("Failed to delete food");
     }
   };
 
-  // Open modal for editing
   const handleEdit = (food) => {
     setEditingFood(food._id);
     setForm({ ...food });
-    setImagePreview(food.food_image); // initial preview
+    setImagePreview(food.food_image);
   };
 
-  // Handle form input changes
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Handle image upload
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Show preview before uploading
     const reader = new FileReader();
     reader.onloadend = () => setImagePreview(reader.result);
     reader.readAsDataURL(file);
@@ -81,7 +73,9 @@ const ManageMyFoods = () => {
 
     try {
       const res = await fetch(
-        `https://api.imgbb.com/1/upload?key=9a3b67c0f54834f6bf3e123b98af36d0`,
+        `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_IMGBB_API_KEY
+        }`,
         {
           method: "POST",
           body: formData,
@@ -91,11 +85,10 @@ const ManageMyFoods = () => {
       setForm({ ...form, food_image: data.data.url });
     } catch (error) {
       console.error("Image upload failed:", error);
-      alert("Image upload failed");
+      toast.error("Image upload failed");
     }
   };
 
-  // Submit update
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -110,134 +103,189 @@ const ManageMyFoods = () => {
         myFoods.map((food) => (food._id === editingFood ? form : food))
       );
       setEditingFood(null);
-      alert("Food updated successfully!");
+      toast.success("Food updated successfully!");
     } catch (error) {
       console.error(error);
-      alert("Failed to update food");
+      toast.error("Failed to update food");
     }
   };
 
-  if (!user) return <p>Please log in to manage your foods.</p>;
+  if (!user)
+    return (
+      <p className="text-center mt-10 text-red-600">
+        Please log in to manage your foods.
+      </p>
+    );
 
   return (
-    <section className="p-4 max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Manage My Foods</h2>
+    <section className="max-w-4xl mx-auto py-12 px-4">
+      <h2 className="text-3xl font-extrabold text-green-600 mb-8 text-center">
+        Manage My Foods
+      </h2>
+
       {loading ? (
-        <p>Loading...</p>
+        <p className="text-center text-gray-500">Loading...</p>
       ) : myFoods.length === 0 ? (
-        <p>No foods added yet.</p>
+        <p className="text-center text-gray-500">No foods added yet.</p>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {myFoods.map((food) => (
             <div
               key={food._id}
-              className="border p-4 rounded shadow flex justify-between items-center"
+              className="bg-white shadow-lg rounded-3xl overflow-hidden transition hover:shadow-2xl"
             >
-              <div className="flex items-center gap-4">
-                <img
-                  src={food.food_image}
-                  alt={food.food_name}
-                  className="w-20 h-20 object-cover rounded"
-                />
-                <div>
-                  <h3 className="font-bold">{food.food_name}</h3>
-                  <p>Quantity: {food.food_quantity}</p>
-                  <p>Pickup: {food.pickup_location}</p>
-                  <p>Status: {food.food_status}</p>
+              <img
+                src={food.food_image}
+                alt={food.food_name}
+                className="w-full h-48 object-cover rounded-t-3xl"
+              />
+              <div className="p-5 space-y-2">
+                <h3 className="text-xl font-bold text-gray-800">
+                  {food.food_name}
+                </h3>
+                <p className="text-gray-600">Quantity: {food.food_quantity}</p>
+                <p className="text-gray-600">Pickup: {food.pickup_location}</p>
+                <p className="text-gray-600">Expires: {food.expire_date}</p>
+                <p className="text-gray-600">{food.additional_notes}</p>
+                <div className="flex justify-end gap-3 mt-3">
+                  <button
+                    onClick={() => handleEdit(food)}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
+                  >
+                    Update
+                  </button>
+                  <button
+                    onClick={() => handleDelete(food._id)}
+                    className="px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition"
+                  >
+                    Delete
+                  </button>
                 </div>
-              </div>
-              <div className="flex flex-col gap-2">
-                <button
-                  onClick={() => handleEdit(food)}
-                  className="bg-blue-500 text-white px-3 py-1 rounded"
-                >
-                  Update
-                </button>
-                <button
-                  onClick={() => handleDelete(food._id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded"
-                >
-                  Delete
-                </button>
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* Update Modal */}
+      {/* Edit Modal */}
       {editingFood && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 px-4 z-50 overflow-auto">
           <form
             onSubmit={handleUpdateSubmit}
-            className="bg-white p-6 rounded max-w-md w-full space-y-3"
+            className="bg-white shadow-2xl rounded-3xl p-10 max-w-md w-full space-y-6"
           >
-            <h3 className="text-xl font-bold">Update Food</h3>
-            <input
-              type="text"
-              name="food_name"
-              value={form.food_name}
-              onChange={handleChange}
-              placeholder="Food Name"
-              required
-              className="border p-2 w-full"
-            />
-            <input
-              type="file"
-              onChange={handleImageUpload}
-              className="border p-2 w-full"
-            />
-            {imagePreview && (
-              <img
-                src={imagePreview}
-                alt="Preview"
-                className="w-32 h-32 object-cover rounded mx-auto"
+            <h3 className="text-3xl font-extrabold text-green-600 text-center">
+              Update Food
+            </h3>
+
+           
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Food Name
+              </label>
+              <input
+                type="text"
+                name="food_name"
+                value={form.food_name}
+                onChange={handleChange}
+                placeholder="e.g., Vegetable Curry"
+                required
+                className="border text-gray-700 border-gray-300 rounded-xl p-3 w-full focus:ring-2 focus:ring-green-400 focus:outline-none transition"
               />
-            )}
-            <input
-              type="text"
-              name="food_quantity"
-              value={form.food_quantity}
-              onChange={handleChange}
-              placeholder="Quantity"
-              required
-              className="border p-2 w-full"
-            />
-            <input
-              type="text"
-              name="pickup_location"
-              value={form.pickup_location}
-              onChange={handleChange}
-              placeholder="Pickup Location"
-              required
-              className="border p-2 w-full"
-            />
-            <input
-              type="date"
-              name="expire_date"
-              value={form.expire_date}
-              onChange={handleChange}
-              required
-              className="border p-2 w-full"
-            />
-            <textarea
-              name="additional_notes"
-              value={form.additional_notes}
-              onChange={handleChange}
-              placeholder="Additional Notes"
-              className="border p-2 w-full"
-            />
-            <div className="flex justify-end gap-2">
+            </div>
+
+            {/* Food Image */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Upload Food Image
+              </label>
+              <input
+                type="file"
+                onChange={handleImageUpload}
+                className="border text-gray-700 border-gray-300 rounded-xl p-2 w-full cursor-pointer bg-gray-50 hover:bg-gray-100 focus:ring-2 focus:ring-green-400 focus:outline-none transition"
+              />
+              {imagePreview && (
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-32 h-32 object-cover rounded-xl mx-auto mt-2"
+                />
+              )}
+            </div>
+
+            {/* Quantity */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Quantity
+              </label>
+              <input
+                type="text"
+                name="food_quantity"
+                value={form.food_quantity}
+                onChange={handleChange}
+                placeholder="e.g., Serves 2 people"
+                required
+                className="border border-gray-300 text-gray-700 rounded-xl p-3 w-full focus:ring-2 focus:ring-green-400 focus:outline-none transition"
+              />
+            </div>
+
+            {/* Location */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Pickup Location
+              </label>
+              <input
+                type="text"
+                name="pickup_location"
+                value={form.pickup_location}
+                onChange={handleChange}
+                placeholder="e.g., Dhaka, Bangladesh"
+                required
+                className="border text-gray-700 border-gray-300 rounded-xl p-3 w-full focus:ring-2 focus:ring-green-400 focus:outline-none transition"
+              />
+            </div>
+
+            {/*Date */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Expiration Date
+              </label>
+              <input
+                type="date"
+                name="expire_date"
+                value={form.expire_date}
+                onChange={handleChange}
+                required
+                className="border text-gray-700 border-gray-300 rounded-xl p-3 w-full focus:ring-2 focus:ring-green-400 focus:outline-none transition"
+              />
+            </div>
+
+            {/*Notes */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Additional Notes
+              </label>
+              <textarea
+                name="additional_notes"
+                value={form.additional_notes}
+                onChange={handleChange}
+                placeholder="Any special instructions?"
+                rows="3"
+                className="border text-gray-700 border-gray-300 rounded-xl p-3 w-full  focus:ring-2 focus:ring-green-400 focus:outline-none transition"
+              />
+            </div>
+
+            <div className="flex justify-end gap-4">
               <button
                 type="button"
                 onClick={() => setEditingFood(null)}
-                className="px-4 py-2 border rounded"
+                className="px-6 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition font-semibold"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="bg-green-500 text-white px-4 py-2 rounded"
+                className="px-6 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition font-semibold"
               >
                 Save
               </button>
@@ -245,7 +293,8 @@ const ManageMyFoods = () => {
           </form>
         </div>
       )}
-      <ToastContainer/>
+
+      <ToastContainer />
     </section>
   );
 };
