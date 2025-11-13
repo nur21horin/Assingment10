@@ -6,27 +6,26 @@ import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user,  LogOut } = useContext(AuthContext); // assuming you have logOut in your context
-  const navigate=useNavigation();
+  const { user, LogOut } = useContext(AuthContext); // assuming you have logOut in your context
+  const navigate = useNavigation();
   const isLoggedIn = !!user;
 
   const handleLogOut = () => {
-     LogOut()
-     .then(()=>{
-      toast.success("Logged out successfully!");
-      navigate("/");
-     })
-     .catch((err)=>{
-      console.log(err);
-      toast.error("Logout failed! Try again!")
-     })
+    LogOut()
+      .then(() => {
+        toast.success("Logged out successfully!");
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Logout failed! Try again!");
+      });
   };
 
   return (
     <nav className="w-full bg-white shadow-sm z-50">
       <div className="w-full px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <Link
             to="/"
             className="flex items-center gap-2 font-bold text-green-800 text-xl hover:opacity-80"
@@ -37,7 +36,6 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
             <Link
               to="/"
@@ -73,7 +71,6 @@ const Navbar = () => {
                   My Food Requests
                 </Link>
 
-                {/* User Avatar */}
                 <div className="flex items-center gap-3">
                   {user?.photoURL ? (
                     <img
@@ -103,17 +100,19 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             className="md:hidden text-blue-800 p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 space-y-3 border-t">
             <Link
