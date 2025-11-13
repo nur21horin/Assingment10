@@ -29,12 +29,10 @@ const FeaturedFoods = () => {
       });
   }, []);
 
-  // Loading spinner
   if (loading) {
     return <Spinner />;
   }
 
-  // Error message
   if (error) {
     return (
       <div className="text-center text-red-600 py-16">
@@ -43,20 +41,18 @@ const FeaturedFoods = () => {
     );
   }
 
-  // Empty state
   if (foods.length === 0) {
     return (
       <div className="text-center py-16 text-gray-600">
-        <p>No foods available right now.</p>
+        <p>Foods are not available now.</p>
       </div>
     );
   }
 
-  // Main UI
   return (
     <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Section Header */}
+       
         <div className="text-center mb-12">
           <span className="text-sm font-semibold bg-blue-100 text-blue-700 px-4 py-1 rounded-full">
             Featured Foods
@@ -69,8 +65,6 @@ const FeaturedFoods = () => {
             Grab yours before it's gone!
           </p>
         </div>
-
-        {/* Food Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {foods.map((food) => (
             <div

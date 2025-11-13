@@ -9,13 +9,15 @@ import Home from "./Components/Home/Home.jsx";
 import Register from "./Components/Register/Register.jsx";
 import AuthProvider from "./context/AuthProvider.jsx";
 import AddFood from "./Page/AddFood.jsx";
-import AvailableFoods from "./Page/AvailableFoods.jsx";
+
+
 import Login from "./Components/Login/Login.jsx";
 import Errorpage from "./Page/Errorpage.jsx";
 import FoodDetails from "./Components/FoodDetails/FoodDetails.jsx";
 import MyRequests from "./Components/MyrequestItem/MyRequestItem.jsx";
 import PrivateRoute from "./Components/Privateroute/PrivateRoute.jsx";
 import ManageMyFoods from "./Components/Managefood/Managefood.jsx";
+import AvailableFoods from "./Components/AvailableFoods/AvailableFoods.jsx";
 
 const router = createBrowserRouter([
   {
@@ -37,7 +39,10 @@ const router = createBrowserRouter([
       },
       {
         path: "availablefoods",
-        Component: AvailableFoods,
+        Component:()=>(
+           <PrivateRoute>
+          <AvailableFoods></AvailableFoods>
+           </PrivateRoute>),
       },
       {
         path: "login",
