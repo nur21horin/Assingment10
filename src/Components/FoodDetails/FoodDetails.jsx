@@ -50,7 +50,7 @@ const FoodDetails = () => {
         />
 
         <div className="p-6 space-y-4">
-          <h2 className="text-3xl font-bold">{food.food_name}</h2>
+          <h2 className="text-3xl text-green-800 font-bold">{food.food_name}</h2>
           <p className="text-gray-600">Quantity: {food.food_quantity}</p>
           <p className="text-gray-600">Pickup Location: {food.pickup_location}</p>
           <p className="text-gray-600">
@@ -67,7 +67,7 @@ const FoodDetails = () => {
               className="w-12 h-12 rounded-full object-cover"
             />
             <div>
-              <p className="font-semibold">{food.donator_name}</p>
+              <p className="font-semibold text-green-800">{food.donator_name}</p>
               <p className="text-gray-500 text-sm">{food.donator_email}</p>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../context/Authcontext";
+import { toast, ToastContainer } from "react-toastify";
 
 const RequestFood = ({ foodId }) => {
   const { user } = useContext(AuthContext);
@@ -14,12 +15,11 @@ const RequestFood = ({ foodId }) => {
     try {
       setLoading(true);
 
-      // Optional: Firebase token (only if backend verifies JWT)
       const token = user.getIdToken ? await user.getIdToken() : "";
 
       const requestBody = {
         food_id: foodId,
-        user_name: user.displayName || user.email.split("@")[0], // fallback to email prefix
+        user_name: user.displayName || user.email.split("@")[0],
         user_email: user.email,
       };
 
@@ -37,23 +37,26 @@ const RequestFood = ({ foodId }) => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to request food");
 
-      alert("✅ Food requested successfully!");
+      toast.success(" Food requested successfully!");
     } catch (error) {
       console.error("Request error:", error);
-      alert(error.message);
+      
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <button
+   <div>
+     <button
       onClick={handleRequest}
       disabled={loading}
       className="mt-6 w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
     >
       {loading ? "Requesting..." : "Request Food"}
     </button>
+    <ToastContainer/>
+   </div>
   );
 };
 
