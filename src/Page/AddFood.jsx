@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/Authcontext";
 import { Calendar } from "lucide-react";
+import { toast, ToastContainer } from "react-toastify";
 
 const AddFood = () => {
   const { user } = useContext(AuthContext);
@@ -43,7 +44,7 @@ const AddFood = () => {
       setForm({ ...form, food_image: data.data.url });
     } catch (error) {
       console.error("Image upload failed:", error);
-      alert("Image upload failed");
+      toast.error("Image upload failed");
     }
   };
 
@@ -51,7 +52,7 @@ const AddFood = () => {
     e.preventDefault();
 
     if (!user) {
-      alert("You must be logged in to add food");
+      toast.error("You must be logged in to add food");
       navigate("/login");
       return;
     }
@@ -83,7 +84,7 @@ const AddFood = () => {
 
       if (!res.ok) throw new Error("Failed to add food");
 
-      alert("Food added successfully!");
+      toast.success("Food added successfully!");
       setForm({
         food_name: "",
         food_image: "",
@@ -104,6 +105,7 @@ const AddFood = () => {
   return (
     <section className="max-w-xl mx-auto bg-white shadow-2xl rounded-3xl p-10 mt-12 border border-gray-100">
       <div className="text-center mb-8">
+      <ToastContainer></ToastContainer>
         <h2 className="text-4xl font-extrabold text-green-600 mb-2">
           Add New Food
         </h2>
