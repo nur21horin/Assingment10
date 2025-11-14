@@ -74,9 +74,10 @@ const AddFood = () => {
         donator_email: user.email,
         donator_image: user.photoURL,
       };
-
+      console.log(foodData);
       const res = await fetch(
-        "/foods",
+        "https://server-orpin.vercel.app/foods",
+
         {
           method: "POST",
           headers: {

@@ -21,14 +21,11 @@ const AvailableFoods = () => {
           token = await user.getIdToken();
         }
 
-        const res = await fetch(
-          "https://server-orpin.vercel.app/foods",
-          {
-            headers: {
-              Authorization: token ? `Bearer ${token}` : "",
-            },
-          }
-        );
+        const res = await fetch("https://server-orpin.vercel.app/foods", {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        });
 
         if (!res.ok) throw new Error("Failed to fetch foods");
 
