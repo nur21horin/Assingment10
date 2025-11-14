@@ -6,7 +6,7 @@ PlateShare is a full-stack MERN application that allows users to share their sur
 
 ## Live Site
 ## Live Site
-[Visit Available Foods](https://dazzling-babka-75b8f8.netlify.app/availablefoods)
+[Visit Available Foods](https://dazzling-babka-75b8f8.netlify.app)
 
 
 ## Features
