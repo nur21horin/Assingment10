@@ -30,7 +30,7 @@ PlateShare is a full-stack MERN application that allows users to share their sur
 - **Database:** MongoDB
 - **Authentication:** Firebase
 - **Image Hosting:** imgbb
-- **Animations:** AOS / Framer Motion (optional)
+- **Animations:**  Framer Motion 
 
 ---
 
