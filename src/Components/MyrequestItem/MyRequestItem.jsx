@@ -14,7 +14,7 @@ const MyRequests = () => {
     const fetchRequests = async () => {
       try {
         const res = await fetch(
-          `https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//requests/${user.email}`
+          `https://server-orpin.vercel.app/requests/${user.email}`
         );
         if (!res.ok) throw new Error("Failed to fetch requests");
         const data = await res.json();
@@ -23,7 +23,7 @@ const MyRequests = () => {
           data.map(async (req) => {
             try {
               const foodRes = await fetch(
-                `https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//foods/${req.food_id}`
+                `https://server-orpin.vercel.app/foods/${req.food_id}`
               );
               if (!foodRes.ok) return { ...req, foodDetails: null };
               const foodData = await foodRes.json();
@@ -52,7 +52,7 @@ const MyRequests = () => {
 
     try {
       const res = await fetch(
-        `https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//requests/${id}`,
+        `https://server-orpin.vercel.app/requests/${id}`,
         {
           method: "DELETE",
         }

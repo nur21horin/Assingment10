@@ -29,17 +29,14 @@ const RequestFoodModal = ({ food }) => {
         contact: form.contact,
         status: "Pending",
       };
-      const res = await fetch(
-        "https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//requests",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
+      const res = await fetch("https://server-orpin.vercel.app/requests", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(requestBody),
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to submit request");
       toast.success("Food requested successfully!");

@@ -76,7 +76,7 @@ const AddFood = () => {
       };
 
       const res = await fetch(
-        "https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//foods",
+        "/foods",
         {
           method: "POST",
           headers: {

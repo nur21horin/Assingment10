@@ -25,17 +25,14 @@ const RequestFood = ({ foodId }) => {
 
       console.log("Sending request:", requestBody);
 
-      const res = await fetch(
-        "https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//requests",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token ? `Bearer ${token}` : undefined,
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
+      const res = await fetch("https://server-orpin.vercel.app/requests", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+        body: JSON.stringify(requestBody),
+      });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to request food");

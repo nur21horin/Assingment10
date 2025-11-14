@@ -23,7 +23,7 @@ const ManageMyFoods = () => {
     try {
       const token = await user.getIdToken();
       const res = await fetch(
-        `https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//my-foods/${user.email}`,
+        `https://server-orpin.vercel.app/my-foods/${user.email}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -45,13 +45,10 @@ const ManageMyFoods = () => {
     if (!window.confirm("Are you sure you want to delete this food?")) return;
     try {
       const token = await user.getIdToken();
-      const res = await fetch(
-        `https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//foods/${id}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await fetch(`https://server-orpin.vercel.app/foods/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (!res.ok) throw new Error("Failed to delete food");
       setMyFoods(myFoods.filter((food) => food._id !== id));
       toast.success("Food item deleted successfully");
@@ -105,7 +102,7 @@ const ManageMyFoods = () => {
     try {
       const token = await user.getIdToken();
       const res = await fetch(
-        `https://nur-plate-share-nzyecs5fx-nur-mohammods-projects.vercel.app//foods/${editingFood}`,
+        `https://server-orpin.vercel.app/foods/${editingFood}`,
         {
           method: "PUT",
           headers: {
