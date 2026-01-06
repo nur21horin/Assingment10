@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../context/Authcontext";
+import { ThemeContext } from "../../context/ThemeContext";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const RequestFoodModal = ({ food }) => {
   const { user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ location: "", reason: "", contact: "" });
   const [loading, setLoading] = useState(false);
@@ -52,30 +54,46 @@ const RequestFoodModal = ({ food }) => {
 
   return (
     <div>
+      {/* Open Modal Button */}
       <button
         onClick={() => setOpen(true)}
-        className="mt-6 w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
+        className="mt-6 w-full 
+                   bg-green-600 dark:bg-green-500 
+                   text-white 
+                   py-2 rounded-md 
+                   hover:bg-green-700 dark:hover:bg-green-600 
+                   transition-colors duration-300"
       >
         Request Food
       </button>
+
+      {/* Modal */}
       {open && (
-        <div className="fixed inset-0 text-gray-600 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div
+            className="absolute inset-0 bg-black bg-opacity-50"
+            onClick={() => setOpen(false)}
+          ></div>
+
+          <div className="relative bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-lg p-6 w-full max-w-md shadow-lg">
             <h3 className="text-xl font-bold mb-4">Request Food</h3>
+
             <input
               type="text"
               name="location"
               placeholder="Your Location"
               value={form.location}
               onChange={handleChange}
-              className="w-full text-gray-600 p-2 border rounded mb-3"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded mb-3
+                         bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
             <textarea
               name="reason"
               placeholder="Why do you need food?"
               value={form.reason}
               onChange={handleChange}
-              className="w-full text-gray-600 p-2 border rounded mb-3"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded mb-3
+                         bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
             <input
               type="text"
@@ -83,19 +101,21 @@ const RequestFoodModal = ({ food }) => {
               placeholder="Contact Number"
               value={form.contact}
               onChange={handleChange}
-              className="w-full text-gray-600 p-2 border rounded mb-3"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded mb-3
+                         bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
+
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setOpen(false)}
-                className="px-4 py-2 bg-gray-300 rounded"
+                className="px-4 py-2 bg-gray-300 dark:bg-gray-600 rounded hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                className="px-4 py-2 bg-green-600 dark:bg-green-500 text-white rounded hover:bg-green-700 dark:hover:bg-green-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? "Requesting..." : "Submit"}
               </button>

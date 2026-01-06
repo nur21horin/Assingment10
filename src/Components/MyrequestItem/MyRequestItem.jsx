@@ -71,13 +71,13 @@ const MyRequests = () => {
 
   if (!requests.length)
     return (
-      <p className="text-gray-500 text-center text-lg mt-10">
+      <p className="text-gray-500 dark:text-gray-400 text-center text-lg mt-10">
         You haven't requested any food yet.
       </p>
     );
 
   return (
-    <section className="max-w-6xl mx-auto p-6">
+    <section className="max-w-6xl mx-auto p-6 transition-colors duration-300 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <h1 className="text-3xl font-extrabold text-green-600 mb-8 text-center">
         My Food Requests
       </h1>
@@ -88,7 +88,7 @@ const MyRequests = () => {
           return (
             <div
               key={req._id}
-              className="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300"
+              className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg dark:shadow-gray-700 overflow-hidden hover:shadow-xl transition duration-300"
             >
               <div className="h-48 w-full overflow-hidden rounded-t-3xl">
                 {food.food_image ? (
@@ -98,29 +98,24 @@ const MyRequests = () => {
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+                  <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-300">
                     No Image
                   </div>
                 )}
               </div>
 
               <div className="p-5 space-y-2">
-                <h3 className="text-xl font-bold text-gray-800">
-                  {food.food_name || "Unknown Food"}
-                </h3>
-                <p className="text-gray-600">
-                  Pickup: {food.pickup_location || "N/A"}
-                </p>
-                <p className="text-gray-500 text-sm">
-                  Requested On:{" "}
-                  {new Date(req.requested_at).toLocaleDateString()}
+                <h3 className="text-xl font-bold">{food.food_name || "Unknown Food"}</h3>
+                <p>Pickup: {food.pickup_location || "N/A"}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Requested On: {new Date(req.requested_at).toLocaleDateString()}
                 </p>
 
                 <span
                   className={`inline-block mt-3 px-4 py-1 rounded-full text-sm font-medium ${
                     req.status === "Pending"
-                      ? "bg-yellow-100 text-yellow-700"
-                      : "bg-green-100 text-green-700"
+                      ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-300"
+                      : "bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-300"
                   }`}
                 >
                   {req.status}
@@ -128,7 +123,7 @@ const MyRequests = () => {
 
                 <button
                   onClick={() => handleDelete(req._id)}
-                  className="mt-4 w-full bg-red-500 text-white py-2 rounded-xl hover:bg-red-600 transition"
+                  className="mt-4 w-full bg-red-500 dark:bg-red-600 text-white py-2 rounded-xl hover:bg-red-600 dark:hover:bg-red-700 transition"
                 >
                   Delete Request
                 </button>
@@ -137,6 +132,7 @@ const MyRequests = () => {
           );
         })}
       </div>
+
       <ToastContainer />
     </section>
   );

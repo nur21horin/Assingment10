@@ -18,6 +18,7 @@ import AuthProvider from "./context/AuthProvider.jsx";
 import PrivateRoute from "./Components/Privateroute/PrivateRoute.jsx";
 import AuthLoader from "./context/AuthLoader.jsx";
 import ManageMyFoods from "./Components/Managefood/Managefood.jsx";
+import ThemeProvider, { ThemeContext } from "./context/ThemeContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -61,9 +62,11 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-      <AuthLoader>
-        <RouterProvider router={router} />
-      </AuthLoader>
+      <ThemeProvider>
+        <AuthLoader>
+          <RouterProvider router={router} />
+        </AuthLoader>
+      </ThemeProvider>
     </AuthProvider>
   </StrictMode>
 );

@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../context/Authcontext";
 import { toast, ToastContainer } from "react-toastify";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const RequestFood = ({ foodId }) => {
   const { user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext); // optional, for extra logic if needed
   const [loading, setLoading] = useState(false);
 
   const handleRequest = async () => {
@@ -37,9 +39,10 @@ const RequestFood = ({ foodId }) => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to request food");
 
-      toast.success(" Food requested successfully!");
+      toast.success("Food requested successfully!");
     } catch (error) {
       console.error("Request error:", error);
+      toast.error("Failed to request food.");
     } finally {
       setLoading(false);
     }
@@ -50,7 +53,15 @@ const RequestFood = ({ foodId }) => {
       <button
         onClick={handleRequest}
         disabled={loading}
-        className="mt-6 w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
+        className="
+          mt-6 w-full 
+          bg-green-600 dark:bg-green-500 
+          text-white 
+          py-2 rounded-md 
+          hover:bg-green-700 dark:hover:bg-green-600 
+          transition-colors duration-300
+          disabled:opacity-50 disabled:cursor-not-allowed
+        "
       >
         {loading ? "Requesting..." : "Request Food"}
       </button>

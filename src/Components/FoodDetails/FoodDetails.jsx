@@ -5,11 +5,13 @@ import Spinner from "../../Page/Spinner";
 import RequestFoodModal from "./RequestFoodModal";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const FoodDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext); // optional, for theme-dependent logic
 
   const [food, setFood] = useState(null);
   const [requests, setRequests] = useState([]);
@@ -75,44 +77,51 @@ const FoodDetails = () => {
     }
   };
 
-  if (loading) return <Spinner />;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center py-20">
+        <Spinner />
+      </div>
+    );
   if (error)
-    return <div className="text-center text-red-600 py-16">{error}</div>;
+    return (
+      <div className="text-center text-red-600 dark:text-red-400 py-16">{error}</div>
+    );
   if (!food)
     return (
-      <div className="text-center py-16 text-gray-600">Food not found.</div>
+      <div className="text-center py-16 text-gray-600 dark:text-gray-300">
+        Food not found.
+      </div>
     );
 
   return (
     <section className="max-w-3xl mx-auto p-6">
-      <div className="bg-white shadow-md rounded-2xl overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-700 rounded-2xl overflow-hidden transition-colors duration-300">
         <img
           src={food.food_image || "/placeholder.jpg"}
           alt={food.food_name}
           className="w-full h-64 object-cover"
         />
 
-        <div className="p-6 space-y-4">
-          <h2 className="text-3xl text-green-800 font-bold">
+        <div className="p-6 space-y-4 text-gray-800 dark:text-gray-100">
+          <h2 className="text-3xl text-green-800 dark:text-green-400 font-bold">
             {food.food_name}
           </h2>
-          <p className="text-gray-600">
-            <span className="font-semibold">Quantity:</span>{" "}
-            {food.food_quantity}
+          <p>
+            <span className="font-semibold">Quantity:</span> {food.food_quantity}
           </p>
-          <p className="text-gray-600">
+          <p>
             <span className="font-semibold">Pickup Location:</span>{" "}
             {food.pickup_location}
           </p>
-          <p className="text-gray-600">
+          <p>
             <span className="font-semibold">Expire Date:</span>{" "}
             {new Date(food.expire_date).toLocaleDateString()}
           </p>
 
           {food.additional_notes && (
-            <p className="text-gray-600">
-              <span className="font-semibold">Notes:</span>{" "}
-              {food.additional_notes}
+            <p>
+              <span className="font-semibold">Notes:</span> {food.additional_notes}
             </p>
           )}
 
@@ -123,10 +132,12 @@ const FoodDetails = () => {
               className="w-12 h-12 rounded-full object-cover"
             />
             <div>
-              <p className="font-semibold text-green-800">
+              <p className="font-semibold text-green-800 dark:text-green-400">
                 {food.donator_name}
               </p>
-              <p className="text-gray-500 text-sm">{food.donator_email}</p>
+              <p className="text-gray-500 dark:text-gray-300 text-sm">
+                {food.donator_email}
+              </p>
             </div>
           </div>
 
@@ -136,62 +147,64 @@ const FoodDetails = () => {
 
           {food.donator_email === user.email && (
             <div className="mt-8">
-              <h3 className="text-xl font-bold mb-4 text-green-800">
+              <h3 className="text-xl font-bold mb-4 text-green-800 dark:text-green-400">
                 Food Requests
               </h3>
               {requests.length === 0 ? (
-                <p className="text-gray-500 text-sm">No requests yet.</p>
+                <p className="text-gray-500 dark:text-gray-300 text-sm">
+                  No requests yet.
+                </p>
               ) : (
-                <table className="w-full border-collapse border border-gray-200 text-sm">
-                  <thead className="bg-green-100 text-green-800">
+                <table className="w-full border-collapse border border-gray-200 dark:border-gray-600 text-sm">
+                  <thead className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
                     <tr>
-                      <th className="p-2 text-gray-600 border">Name</th>
-                      <th className="p-2 text-gray-600 border">Email</th>
-                      <th className="p-2 text-gray-600 border">Location</th>
-                      <th className="p-2 text-gray-600 border">Reason</th>
-                      <th className="p-2 text-gray-600 border">Contact</th>
-                      <th className="p-2 text-gray-600 border">Status</th>
-                      <th className="p-2 text-gray-600 border">Action</th>
+                      <th className="p-2 border border-gray-200 dark:border-gray-600">Name</th>
+                      <th className="p-2 border border-gray-200 dark:border-gray-600">Email</th>
+                      <th className="p-2 border border-gray-200 dark:border-gray-600">Location</th>
+                      <th className="p-2 border border-gray-200 dark:border-gray-600">Reason</th>
+                      <th className="p-2 border border-gray-200 dark:border-gray-600">Contact</th>
+                      <th className="p-2 border border-gray-200 dark:border-gray-600">Status</th>
+                      <th className="p-2 border border-gray-200 dark:border-gray-600">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {requests.map((req) => (
                       <tr
                         key={req._id}
-                        className={`text-center text-gray-600 ${
+                        className={`text-center ${
                           req.status === "Accepted"
-                            ? "text-gray-600 bg-green-50"
+                            ? "bg-green-50 dark:bg-green-800 text-gray-800 dark:text-gray-100"
                             : req.status === "Rejected"
-                            ? "text-gray-600 bg-red-50"
-                            : ""
+                            ? "bg-red-50 dark:bg-red-800 text-gray-800 dark:text-gray-100"
+                            : "text-gray-800 dark:text-gray-100"
                         }`}
                       >
-                        <td className="p-2 text-gray-600 border">
+                        <td className="p-2 border border-gray-200 dark:border-gray-600">
                           {req.user_name}
                         </td>
-                        <td className="p-2 text-gray-600 border">
+                        <td className="p-2 border border-gray-200 dark:border-gray-600">
                           {req.user_email}
                         </td>
-                        <td className="p-2 text-gray-600 border">
+                        <td className="p-2 border border-gray-200 dark:border-gray-600">
                           {req.location}
                         </td>
-                        <td className="p-2 text-gray-600 border">
+                        <td className="p-2 border border-gray-200 dark:border-gray-600">
                           {req.reason}
                         </td>
-                        <td className="p-2 text-gray-600 border">
+                        <td className="p-2 border border-gray-200 dark:border-gray-600">
                           {req.contact}
                         </td>
-                        <td className="p-2  text-gray-600 border font-semibold">
+                        <td className="p-2 border border-gray-200 dark:border-gray-600 font-semibold">
                           {req.status}
                         </td>
-                        <td className="p-2 border space-x-2">
+                        <td className="p-2 border border-gray-200 dark:border-gray-600 space-x-2">
                           {req.status === "Pending" && (
                             <>
                               <button
                                 onClick={() =>
                                   handleStatusUpdate(req._id, "Accepted")
                                 }
-                                className="px-2 py-1 bg-green-600 text-white rounded hover:bg-green-700"
+                                className="px-2 py-1 bg-green-600 dark:bg-green-500 text-white rounded hover:bg-green-700 dark:hover:bg-green-600 transition-colors duration-300"
                               >
                                 Accept
                               </button>
@@ -199,7 +212,7 @@ const FoodDetails = () => {
                                 onClick={() =>
                                   handleStatusUpdate(req._id, "Rejected")
                                 }
-                                className="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                                className="px-2 py-1 bg-red-600 dark:bg-red-500 text-white rounded hover:bg-red-700 dark:hover:bg-red-600 transition-colors duration-300"
                               >
                                 Reject
                               </button>

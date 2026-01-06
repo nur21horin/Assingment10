@@ -115,7 +115,7 @@ const AddFood = () => {
         <h2 className="text-4xl font-extrabold text-green-600 mb-2">
           Add New Food
         </h2>
-        <p className="text-gray-500 text-lg">
+        <p className="text-gray-500 text-lg  dark:text-gray-400">
           Share your delicious dish with the community
         </p>
       </div>
@@ -132,7 +132,9 @@ const AddFood = () => {
             value={form.food_name}
             onChange={handleChange}
             required
-            className="border text-black filed.text-black-500 border-gray-300 rounded-xl p-3 w-full focus:ring-2 focus:ring-green-400 focus:outline-none transition"
+            className="border   dark:border-gray-600
+             bg-white dark:bg-gray-800
+             text-black dark:text-white  filed.text-black-500 border-gray-300 rounded-xl p-3 w-full focus:ring-2 focus:ring-green-400 focus:outline-none transition"
           />
         </div>
 
@@ -144,7 +146,9 @@ const AddFood = () => {
             type="file"
             onChange={handleImageUpload}
             required
-            className=" text-black border border-gray-300 rounded-xl p-2 w-full cursor-pointer bg-gray-50 hover:bg-gray-100 focus:ring-2 focus:ring-green-400 focus:outline-none transition"
+            className="   dark:border-gray-600
+             bg-white dark:bg-gray-800
+             text-black dark:text-white  border border-gray-300 rounded-xl p-2 w-full cursor-pointer  hover:bg-gray-100 focus:ring-2 focus:ring-green-400 focus:outline-none transition"
           />
         </div>
 
@@ -159,12 +163,14 @@ const AddFood = () => {
             value={form.food_quantity}
             onChange={handleChange}
             required
-            className="border text-black border-gray-300 rounded-xl p-3 w-full focus:ring-2 focus:ring-green-400 focus:outline-none transition"
+            className="border  border-gray-300 dark:border-gray-600
+             bg-white dark:bg-gray-800
+             text-black dark:text-white  rounded-xl p-3 w-full focus:ring-2 focus:ring-green-400 focus:outline-none transition"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm dark:text-gray-400 font-medium text-gray-700 mb-2">
             Pickup Location
           </label>
           <input
@@ -179,7 +185,7 @@ const AddFood = () => {
         </div>
 
         <div className="relative">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
+          <label className="block text-sm dark:text-gray-400 font-semibold text-gray-700 mb-2">
             Expiration Date
           </label>
 
@@ -217,7 +223,7 @@ const AddFood = () => {
             value={form.additional_notes}
             onChange={handleChange}
             rows="3"
-            className="border text-black border-gray-300 rounded-xl p-3 w-full text-gray-600 focus:ring-2 focus:ring-green-400 focus:outline-none transition"
+            className="border text-black border-gray-300 rounded-xl p-3 w-full dark:text-gray-400 focus:ring-2 focus:ring-green-400 focus:outline-none transition"
           />
         </div>
 
