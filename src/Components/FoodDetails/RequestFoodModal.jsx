@@ -29,7 +29,7 @@ const RequestFoodModal = ({ food }) => {
         contact: form.contact,
         status: "Pending",
       };
-      const res = await fetch("https://server-orpin.vercel.app/requests", {
+      const res = await fetch("http://localhost:3000/requests", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

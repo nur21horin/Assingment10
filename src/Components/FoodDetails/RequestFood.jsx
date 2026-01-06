@@ -25,7 +25,7 @@ const RequestFood = ({ foodId }) => {
 
       console.log("Sending request:", requestBody);
 
-      const res = await fetch("https://server-orpin.vercel.app/requests", {
+      const res = await fetch("http://localhost:3000/requests", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

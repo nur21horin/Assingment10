@@ -22,12 +22,9 @@ const ManageMyFoods = () => {
     setLoading(true);
     try {
       const token = await user.getIdToken();
-      const res = await fetch(
-        `https://server-orpin.vercel.app/my-foods/${user.email}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const res = await fetch(`http://localhost:3000/my-foods/${user.email}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const data = await res.json();
       setMyFoods(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -45,7 +42,7 @@ const ManageMyFoods = () => {
     if (!window.confirm("Are you sure you want to delete this food?")) return;
     try {
       const token = await user.getIdToken();
-      const res = await fetch(`https://server-orpin.vercel.app/foods/${id}`, {
+      const res = await fetch(`http://localhost:3000/foods/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -101,17 +98,14 @@ const ManageMyFoods = () => {
     e.preventDefault();
     try {
       const token = await user.getIdToken();
-      const res = await fetch(
-        `https://server-orpin.vercel.app/foods/${editingFood}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(form),
-        }
-      );
+      const res = await fetch(`http://localhost:3000/foods/${editingFood}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(form),
+      });
       if (!res.ok) throw new Error("Failed to update food");
 
       setMyFoods(

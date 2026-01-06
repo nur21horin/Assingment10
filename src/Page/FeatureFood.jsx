@@ -12,7 +12,7 @@ const FeaturedFoods = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://server-orpin.vercel.app/foods")
+    fetch("http://localhost:3000/foods")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch foods");
         return res.json();

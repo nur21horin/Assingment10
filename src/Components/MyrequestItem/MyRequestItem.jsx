@@ -13,9 +13,7 @@ const MyRequests = () => {
 
     const fetchRequests = async () => {
       try {
-        const res = await fetch(
-          `https://server-orpin.vercel.app/requests/${user.email}`
-        );
+        const res = await fetch(`http://localhost:3000/requests/${user.email}`);
         if (!res.ok) throw new Error("Failed to fetch requests");
         const data = await res.json();
 
@@ -23,7 +21,7 @@ const MyRequests = () => {
           data.map(async (req) => {
             try {
               const foodRes = await fetch(
-                `https://server-orpin.vercel.app/foods/${req.food_id}`
+                `http://localhost:3000/foods/${req.food_id}`
               );
               if (!foodRes.ok) return { ...req, foodDetails: null };
               const foodData = await foodRes.json();
@@ -51,12 +49,9 @@ const MyRequests = () => {
       return;
 
     try {
-      const res = await fetch(
-        `https://server-orpin.vercel.app/requests/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`http://localhost:3000/requests/${id}`, {
+        method: "DELETE",
+      });
       if (!res.ok) throw new Error("Failed to delete request");
 
       setRequests(requests.filter((req) => req._id !== id));

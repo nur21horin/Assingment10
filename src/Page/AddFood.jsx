@@ -76,7 +76,7 @@ const AddFood = () => {
       };
       console.log(foodData);
       const res = await fetch(
-        "https://server-orpin.vercel.app/foods",
+        "http://localhost:3000/foods",
 
         {
           method: "POST",

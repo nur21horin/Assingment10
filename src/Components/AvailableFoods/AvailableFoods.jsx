@@ -21,7 +21,7 @@ const AvailableFoods = () => {
           token = await user.getIdToken();
         }
 
-        const res = await fetch("https://server-orpin.vercel.app/foods", {
+        const res = await fetch("http://localhost:3000/foods", {
           headers: {
             Authorization: token ? `Bearer ${token}` : "",
           },
