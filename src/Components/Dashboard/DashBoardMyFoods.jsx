@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../../context/Authcontext";
+
 import { Trash2, Edit } from "lucide-react";
 import DashboardEditFoodModal from "./DashboardEditFoodModal";
 import Spinner from "../../Page/Spinner";
+import { AuthContext } from "../../context/Authcontext";
 
 const DashboardMyFoods = () => {
   const { user } = useContext(AuthContext);
@@ -16,13 +17,20 @@ const DashboardMyFoods = () => {
 
   // Fetch user's foods
   useEffect(() => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
     const fetchMyFoods = async () => {
       try {
         setLoading(true);
         const token = await user.getIdToken();
-        const res = await fetch("http://localhost:3000/foods?user=" + user.email, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await fetch(
+          "http://localhost:3000/foods?user=" + user.email,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         if (!res.ok) throw new Error("Failed to fetch foods");
         const data = await res.json();
         setFoods(data);
@@ -38,7 +46,7 @@ const DashboardMyFoods = () => {
 
   // Open edit modal
   const handleEdit = (food) => {
-    setSelectedFood({ ...food, userToken: user.getIdToken() });
+    setSelectedFood(food);
     setIsModalOpen(true);
   };
 
@@ -69,7 +77,9 @@ const DashboardMyFoods = () => {
 
   if (error)
     return (
-      <p className="text-center text-red-600 dark:text-red-400 py-20">{error}</p>
+      <p className="text-center text-red-600 dark:text-red-400 py-20">
+        {error}
+      </p>
     );
 
   return (
@@ -130,7 +140,9 @@ const DashboardMyFoods = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={(updatedFood) => {
-          setFoods(foods.map((f) => (f._id === updatedFood._id ? updatedFood : f)));
+          setFoods(
+            foods.map((f) => (f._id === updatedFood._id ? updatedFood : f))
+          );
         }}
       />
     </section>

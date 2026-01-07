@@ -71,7 +71,7 @@ const DashboardFoodTable = () => {
       setActionLoading(true);
       const token = user ? await user.getIdToken() : "";
       const res = await fetch(`http://localhost:3000/foods/${id}`, {
-        method: "PATCH",
+        method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ food_status: status }),
       });

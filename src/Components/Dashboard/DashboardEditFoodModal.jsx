@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { AuthContext } from "../../context/Authcontext";
 
 const DashboardEditFoodModal = ({ food, isOpen, onClose, onSave }) => {
   const [form, setForm] = useState({
@@ -10,20 +11,23 @@ const DashboardEditFoodModal = ({ food, isOpen, onClose, onSave }) => {
     expire_date: "",
     additional_notes: "",
   });
+  const { user } = useContext(AuthContext);
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (food) setForm({ ...food });
   }, [food]);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-   
-      const token = await food.userToken;
+      const token = await user.getIdToken();
+      
       const res = await fetch(`http://localhost:3000/foods/${food._id}`, {
         method: "PUT",
         headers: {

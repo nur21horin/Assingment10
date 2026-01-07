@@ -23,6 +23,9 @@ import DashboardLayout from "./Components/Dashboard/DashboardLayout.jsx";
 import DashboardHome from "./Components/Dashboard/HomeDashBoard.jsx";
 import DashboardMyFoods from "./Components/Dashboard/DashBoardMyFoods.jsx";
 import DashboardProfile from "./Components/Dashboard/DashboardProfile.jsx";
+import DashboardOverview from "./Components/Dashboard/DashboardOverview.jsx";
+import DashboardEditFoodModal from "./Components/Dashboard/DashboardEditFoodModal.jsx";
+import DashboardFoodTable from "./Components/Dashboard/DashboardFoodTable.jsx";
 
 const router = createBrowserRouter([
   {
@@ -60,20 +63,45 @@ const router = createBrowserRouter([
         ),
       },
     ],
-  },{
-    path:"/dashboard",
-    element:(
+  },
+  {
+    path: "/dashboard",
+    element: (
       <PrivateRoute>
         <DashboardLayout></DashboardLayout>
       </PrivateRoute>
     ),
-    children:[
-      {index:true,element:<DashboardHome></DashboardHome>},
-      {path:"dashboard-my-foods",element:<DashboardMyFoods></DashboardMyFoods>},
-      {path:"add-food",element:<AddFood></AddFood>},
-      {path:"profile",element:<DashboardProfile></DashboardProfile> }
-    ]
-  }
+    children: [
+      // {index:true,element:<DashboardHome></DashboardHome>},
+      // {path:"dashboard-my-foods",element:<DashboardMyFoods></DashboardMyFoods>},
+      // {path:"add-food",element:<AddFood></AddFood>},
+      // {path:"profile",element:<DashboardProfile></DashboardProfile> }
+    ],
+  },
+  {
+    path: "/dashboardFoodTable",
+    Component: DashboardFoodTable,
+  },
+  {
+    path: "/dashboardHome",
+    Component: DashboardHome,
+  },
+  {
+    path: "/DashboardMyFoods",
+    Component: DashboardMyFoods,
+  },
+  {
+    path: "/DashboardProfile",
+    Component: DashboardProfile,
+  },
+  {
+    path: "/ DashboardOverview",
+    Component: DashboardOverview,
+  },
+  {
+    path: "/DashboardEditFoodModal",
+    Component: DashboardEditFoodModal,
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(

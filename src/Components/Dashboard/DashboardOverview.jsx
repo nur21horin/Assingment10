@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Users, Leaf, TrendingDown, Award } from "lucide-react";
-import { AuthContext } from "../../context/Authcontext";
+
 import Spinner from "../../Page/Spinner";
 import {
   BarChart,
@@ -15,6 +15,7 @@ import {
   Cell,
   Legend,
 } from "recharts";
+import { AuthContext } from "../../context/Authcontext";
 
 const DashboardOverview = () => {
   const { user } = useContext(AuthContext);
