@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Users, Leaf, TrendingDown, Award } from "lucide-react";
-
-import Spinner from "../../Page/Spinner";
 import {
   BarChart,
   Bar,
@@ -15,6 +13,9 @@ import {
   Cell,
   Legend,
 } from "recharts";
+import CountUp from "react-countup";
+import { motion } from "framer-motion";
+import Spinner from "../../Page/Spinner";
 import { AuthContext } from "../../context/Authcontext";
 
 const DashboardOverview = () => {
@@ -25,21 +26,24 @@ const DashboardOverview = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        setLoading(true);
-        const token = await user.getIdToken();
+        if (!user) return;
+        const token = await user.getIdToken(true);
+
         const res = await fetch("http://localhost:3000/dashboard/stats", {
           headers: { Authorization: `Bearer ${token}` },
         });
+
+        if (!res.ok) throw new Error("Failed to fetch dashboard data");
         const data = await res.json();
         setStats(data);
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        console.error("Dashboard fetch error:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    if (user) fetchDashboardData();
+    fetchDashboardData();
   }, [user]);
 
   if (loading)
@@ -49,102 +53,143 @@ const DashboardOverview = () => {
       </div>
     );
 
-  if (!stats) return <p className="text-center py-20">No dashboard data found.</p>;
+  if (!stats)
+    return (
+      <p className="text-center py-20 text-gray-500 dark:text-gray-400">
+        No dashboard data available
+      </p>
+    );
 
   const cardData = [
     {
       icon: Users,
-      value: stats.totalUsers,
       label: "Community Members",
-      color: "text-green-600",
-      bg: "bg-green-100",
+      value: stats.totalUsers ?? 0,
+      color: "from-green-400 to-green-600",
+      bg: "bg-gradient-to-r",
     },
     {
       icon: Leaf,
-      value: stats.totalMeals,
       label: "Meals Shared",
-      color: "text-emerald-600",
-      bg: "bg-emerald-100",
+      value: stats.totalMeals ?? 0,
+      color: "from-emerald-400 to-emerald-600",
+      bg: "bg-gradient-to-r",
     },
     {
       icon: TrendingDown,
-      value: stats.totalWasteReduced,
       label: "Waste Reduced",
-      color: "text-orange-600",
-      bg: "bg-orange-100",
+      value: stats.totalWasteReduced ?? 0,
+      color: "from-orange-400 to-orange-600",
+      bg: "bg-gradient-to-r",
     },
     {
       icon: Award,
-      value: stats.partnerOrganizations,
-      label: "Partner Organizations",
-      color: "text-green-700",
-      bg: "bg-green-100",
+      label: "Partners",
+      value: stats.partnerOrganizations ?? 0,
+      color: "from-indigo-400 to-indigo-600",
+      bg: "bg-gradient-to-r",
     },
   ];
 
-  const barChartData = stats.mealsPerMonth.map((item) => ({
+  const barChartData = (stats.mealsPerMonth || []).map((item) => ({
     month: item.month,
     meals: item.count,
   }));
 
   const pieData = [
-    { name: "Available", value: stats.availableFoods },
-    { name: "Collected", value: stats.collectedFoods },
-    { name: "Expired", value: stats.expiredFoods },
+    { name: "Available", value: stats.availableFoods ?? 0 },
+    { name: "Collected", value: stats.collectedFoods ?? 0 },
+    { name: "Expired", value: stats.expiredFoods ?? 0 },
   ];
 
   const COLORS = ["#22c55e", "#3b82f6", "#f97316"];
 
+  // Animation variants
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.2, duration: 0.5, ease: "easeOut" },
+    }),
+  };
+
+  const chartVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
   return (
     <section className="py-16 max-w-7xl mx-auto px-6">
-      <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-8">
+      <h2 className="text-4xl font-bold mb-12 text-gray-800 dark:text-gray-100 tracking-wide">
         Dashboard Overview
       </h2>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      {/* Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
         {cardData.map((card, idx) => (
-          <div
+          <motion.div
             key={idx}
-            className="bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-700 rounded-xl p-6 flex items-center gap-4 hover:shadow-xl transition"
+            custom={idx}
+            initial="hidden"
+            animate="visible"
+            variants={cardVariants}
+            className={`p-6 rounded-xl shadow-lg hover:shadow-2xl transition-transform transform hover:-translate-y-1 cursor-pointer ${card.bg}`}
           >
-            <div
-              className={`w-12 h-12 rounded-full flex items-center justify-center ${card.bg}`}
-            >
-              <card.icon className={`w-6 h-6 ${card.color}`} />
+            <div className="flex items-center gap-4">
+              <div
+                className={`p-4 rounded-full bg-white dark:bg-gray-800 shadow-md flex items-center justify-center`}
+              >
+                <card.icon className={`text-gray-800 dark:text-gray-100 w-6 h-6`} />
+              </div>
+              <div>
+                <p className="text-3xl font-extrabold text-white dark:text-gray-100">
+                  <CountUp end={card.value} duration={1.5} separator="," />
+                </p>
+                <p className="text-white/80 dark:text-gray-300 mt-1">{card.label}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-xl font-bold text-gray-800 dark:text-gray-100">
-                {card.value}
-              </p>
-              <p className="text-gray-500 dark:text-gray-300">{card.label}</p>
-            </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
       {/* Charts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div className="bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-700 rounded-xl p-6">
-          <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+        {/* Bar Chart */}
+        <motion.div
+          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg"
+          initial="hidden"
+          animate="visible"
+          variants={chartVariants}
+        >
+          <h3 className="text-xl font-semibold mb-6 text-gray-800 dark:text-gray-100">
             Meals Shared Per Month
           </h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={barChartData}>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={barChartData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis dataKey="month" stroke="#6b7280" />
-              <YAxis stroke="#6b7280" />
-              <Tooltip />
-              <Bar dataKey="meals" fill="#22c55e" radius={[5, 5, 0, 0]} />
+              <XAxis dataKey="month" stroke="#9ca3af" />
+              <YAxis stroke="#9ca3af" />
+              <Tooltip
+                contentStyle={{ backgroundColor: "#1f2937", borderRadius: "8px", border: "none" }}
+                itemStyle={{ color: "#f9fafb" }}
+              />
+              <Bar dataKey="meals" fill="#22c55e" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
-        </div>
+        </motion.div>
 
-        <div className="bg-white dark:bg-gray-800 shadow-md dark:shadow-gray-700 rounded-xl p-6">
-          <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+        {/* Pie Chart */}
+        <motion.div
+          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg"
+          initial="hidden"
+          animate="visible"
+          variants={chartVariants}
+        >
+          <h3 className="text-xl font-semibold mb-6 text-gray-800 dark:text-gray-100">
             Food Status Distribution
           </h3>
-          <ResponsiveContainer width="100%" height={250}>
+          <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
                 data={pieData}
@@ -152,18 +197,23 @@ const DashboardOverview = () => {
                 nameKey="name"
                 cx="50%"
                 cy="50%"
-                outerRadius={80}
-                fill="#8884d8"
-                label
+                outerRadius={100}
+                innerRadius={40}
+                paddingAngle={5}
+                label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
               >
-                {pieData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                {pieData.map((_, i) => (
+                  <Cell key={i} fill={COLORS[i]} />
                 ))}
               </Pie>
-              <Legend verticalAlign="bottom" />
+              <Legend verticalAlign="bottom" align="center" iconSize={12} wrapperStyle={{ marginTop: 20 }} />
+              <Tooltip
+                contentStyle={{ backgroundColor: "#1f2937", borderRadius: "8px", border: "none" }}
+                itemStyle={{ color: "#f9fafb" }}
+              />
             </PieChart>
           </ResponsiveContainer>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

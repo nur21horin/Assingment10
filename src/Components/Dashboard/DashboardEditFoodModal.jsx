@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AuthContext } from "../../context/Authcontext";
 
 const DashboardEditFoodModal = ({ food, isOpen, onClose, onSave }) => {
+  const { user } = useContext(AuthContext);
   const [form, setForm] = useState({
     food_name: "",
     food_quantity: "",
@@ -11,13 +12,20 @@ const DashboardEditFoodModal = ({ food, isOpen, onClose, onSave }) => {
     expire_date: "",
     additional_notes: "",
   });
-  const { user } = useContext(AuthContext);
-
   const [loading, setLoading] = useState(false);
 
+  // Reset form when modal opens or food changes
   useEffect(() => {
-    if (food) setForm({ ...food });
-  }, [food]);
+    if (isOpen && food) {
+      setForm({
+        food_name: food.food_name || "",
+        food_quantity: food.food_quantity || "",
+        pickup_location: food.pickup_location || "",
+        expire_date: food.expire_date?.split("T")[0] || "",
+        additional_notes: food.additional_notes || "",
+      });
+    }
+  }, [food, isOpen]);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -25,9 +33,9 @@ const DashboardEditFoodModal = ({ food, isOpen, onClose, onSave }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       const token = await user.getIdToken();
-      
       const res = await fetch(`http://localhost:3000/foods/${food._id}`, {
         method: "PUT",
         headers: {
@@ -36,7 +44,9 @@ const DashboardEditFoodModal = ({ food, isOpen, onClose, onSave }) => {
         },
         body: JSON.stringify(form),
       });
+
       if (!res.ok) throw new Error("Failed to update food");
+
       const updatedFood = await res.json();
       onSave(updatedFood);
       onClose();
@@ -105,7 +115,7 @@ const DashboardEditFoodModal = ({ food, isOpen, onClose, onSave }) => {
               <input
                 type="date"
                 name="expire_date"
-                value={form.expire_date?.split("T")[0] || ""}
+                value={form.expire_date}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"

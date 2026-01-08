@@ -34,7 +34,9 @@ const Navbar = () => {
             className="flex items-center gap-2 font-bold text-green-800 text-xl hover:opacity-80"
           >
             <UtensilsCrossed className="w-6 h-6" />
-            <span className="font-bold text-2xl text-green-800">PlateShare</span>
+            <span className="font-bold text-2xl text-green-800">
+              PlateShare
+            </span>
           </Link>
 
           {/* Desktop Menu */}
@@ -73,6 +75,12 @@ const Navbar = () => {
                   className="text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
                 >
                   Add Food
+                </Link>
+                <Link
+                  to={"/dashboard"}
+                  className="text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+                >
+                  Dashboard
                 </Link>
                 <Link
                   to="/manage-foods"
@@ -123,7 +131,11 @@ const Navbar = () => {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </button>
         </div>
 
@@ -165,6 +177,13 @@ const Navbar = () => {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Add Food
+                </Link>
+                <Link
+                  to={"/dashboard"}
+                  className="block py-2 text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Dashboard
                 </Link>
                 <Link
                   to="/manage-foods"

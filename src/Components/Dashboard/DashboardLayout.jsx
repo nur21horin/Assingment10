@@ -1,79 +1,86 @@
-import React, { useState, useContext } from "react";
-import { Link, Outlet } from "react-router-dom";
-import { Menu, Home, Users, List, BarChart2, LogOut } from "lucide-react";
-import { AuthContext } from "../../context/Authcontext";
+// import React, { useContext } from "react";
+// import { NavLink, Outlet, useLocation } from "react-router-dom";
+
+// import Navbar from "../Navbar/Navbar";
+// import Footer from "../Footer/Footer";
+// import { ThemeContext } from "../../context/ThemeContext";
+
+// const RootLayout = () => {
+//   const { theme } = useContext(ThemeContext);
+//   const location = useLocation();
+
+//   // Dashboard routes should NOT show Navbar/Footer
+//   const isDashboard = location.pathname.startsWith("/dashboard");
+
+//   return (
+//     <div
+//       className={`min-h-screen flex flex-col bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-colors duration-300`}
+//     >
+//       {/* Navbar only for public routes */}
+//       <aside className="w-64 bg-gray-800 text-white p-4">
+//         <h2 className="text-xl font-bold mb-6">Dashboard</h2>
+//         <nav>
+//           <NavLink to="/profile">My Profile</NavLink>
+//           <NavLink to={"/overview"}>Overview</NavLink>
+//           <NavLink to={"/home"}>Home</NavLink>
+//           <NavLink to={"/my-foods"}>My Foods</NavLink>
+//           <NavLink to={"/food-table"}>Food Table</NavLink>
+//           <NavLink to={"/edit-food"}>Food Modal</NavLink>
+//         </nav>
+//       </aside>
+//       {!isDashboard && <Navbar />}
+
+//       {/* Main Content */}
+//       <main className="flex-1">
+//         <Outlet />
+//       </main>
+
+//       {/* Footer only for public routes */}
+//       {!isDashboard && <Footer />}
+//     </div>
+//   );
+// };
+import { Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import DashboardSidebar from "./DashboardSidebar";
 
 const DashboardLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const { LogOut } = useContext(AuthContext);
+  // Load sidebar state from localStorage
+  const [open, setOpen] = useState(() => {
+    const saved = localStorage.getItem("dashboardSidebar");
+    return saved ? JSON.parse(saved) : true;
+  });
+
+  // Persist sidebar state
+  useEffect(() => {
+    localStorage.setItem("dashboardSidebar", JSON.stringify(open));
+  }, [open]);
+
+  // Auto-collapse on mobile resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setOpen(false);
+      }
+    };
+
+    handleResize(); // run on mount
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Sidebar */}
-      <aside
-        className={`${
-          sidebarOpen ? "w-64" : "w-20"
-        } bg-white dark:bg-gray-800 shadow-md transition-width duration-300 flex flex-col`}
-      >
-        <div className="flex items-center justify-between p-4 border-b dark:border-gray-700">
-          <h1 className={`font-bold text-lg text-green-700 ${sidebarOpen ? "" : "hidden"}`}>PlateShare</h1>
-          <button onClick={() => setSidebarOpen(!sidebarOpen)}>
-            <Menu className="h-6 w-6 text-gray-800 dark:text-gray-200" />
-          </button>
-        </div>
-        <nav className="flex-1 mt-4">
-          <ul className="space-y-2">
-            <li>
-              <Link
-                to="/dashboard"
-                className="flex items-center gap-3 p-3 rounded-lg hover:bg-green-100 dark:hover:bg-green-900 transition"
-              >
-                <Home className="h-5 w-5 text-green-600" />
-                {sidebarOpen && "Dashboard Home"}
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/dashboard/myfoods"
-                className="flex items-center gap-3 p-3 rounded-lg hover:bg-green-100 dark:hover:bg-green-900 transition"
-              >
-                <List className="h-5 w-5 text-green-600" />
-                {sidebarOpen && "My Foods"}
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/dashboard/users"
-                className="flex items-center gap-3 p-3 rounded-lg hover:bg-green-100 dark:hover:bg-green-900 transition"
-              >
-                <Users className="h-5 w-5 text-green-600" />
-                {sidebarOpen && "Users"}
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/dashboard/analytics"
-                className="flex items-center gap-3 p-3 rounded-lg hover:bg-green-100 dark:hover:bg-green-900 transition"
-              >
-                <BarChart2 className="h-5 w-5 text-green-600" />
-                {sidebarOpen && "Analytics"}
-              </Link>
-            </li>
-          </ul>
-        </nav>
-        <div className="p-4 border-t dark:border-gray-700">
-          <button
-            onClick={LogOut}
-            className="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-red-100 dark:hover:bg-red-900 text-red-600 dark:text-red-400 transition"
-          >
-            <LogOut className="h-5 w-5" />
-            {sidebarOpen && "Logout"}
-          </button>
-        </div>
-      </aside>
+    <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
+      <DashboardSidebar
+        open={open}
+        setOpen={setOpen}
+        notificationCount={3} // dynamic-ready
+      />
 
-      {/* Main Content */}
-      <main className="flex-1 p-6 overflow-y-auto">
+      <main
+        className={`flex-1 p-6 overflow-y-auto transition-all duration-300
+        ${open ? "md:ml-64" : "md:ml-20"}`}
+      >
         <Outlet />
       </main>
     </div>
