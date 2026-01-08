@@ -54,6 +54,20 @@ const Navbar = () => {
               Available Foods
             </Link>
 
+            <Link
+              to="/about"
+              className="text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+            >
+              About
+            </Link>
+
+            <Link
+              to="/contact"
+              className="text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+            >
+              Contact
+            </Link>
+
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
@@ -149,12 +163,28 @@ const Navbar = () => {
             >
               Home
             </Link>
+
             <Link
               to="/availablefoods"
               className="block py-2 text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               Available Foods
+            </Link>
+            <Link
+              to="/about"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              About
+            </Link>
+
+            <Link
+              to="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-2 text-gray-800 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              Contact
             </Link>
 
             {/* Theme toggle mobile */}

@@ -29,6 +29,8 @@ import DashboardProfile from "./Components/Dashboard/DashboardProfile.jsx";
 import DashboardOverview from "./Components/Dashboard/DashboardOverview.jsx";
 import DashboardEditFoodModal from "./Components/Dashboard/DashboardEditFoodModal.jsx";
 import DashboardFoodTable from "./Components/Dashboard/DashboardFoodTable.jsx";
+import About from "./Page/About.jsx";
+import Contact from "./Page/Contact.jsx";
 
 const router = createBrowserRouter([
   {
@@ -41,13 +43,12 @@ const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "addfoods", element: <AddFood /> },
       { path: "food/:id", element: <FoodDetails /> },
+      { path: "about", element: <About /> },
+      { path: "contact", element: <Contact /> },
+
       {
         path: "availablefoods",
-        element: (
-          <PrivateRoute>
-            <AvailableFoods />
-          </PrivateRoute>
-        ),
+        element: <AvailableFoods />,
       },
       {
         path: "foodRequests",
@@ -80,7 +81,7 @@ const router = createBrowserRouter([
           { path: "profile", element: <DashboardProfile /> },
           { path: "overview", element: <DashboardOverview /> },
           { path: "edit-food", element: <DashboardEditFoodModal /> },
-           { path: "add-foods", element: <AddFood /> },
+          { path: "add-foods", element: <AddFood /> },
         ],
       },
     ],

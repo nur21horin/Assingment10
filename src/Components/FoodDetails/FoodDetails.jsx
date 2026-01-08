@@ -20,10 +20,10 @@ const FoodDetails = () => {
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    if (!user) {
-      navigate("/login");
-      return;
-    }
+    // if (!user) {
+    //   navigate("/login");
+    //   return;
+    // }
 
     const fetchData = async () => {
       try {
@@ -33,7 +33,7 @@ const FoodDetails = () => {
         const foodData = await resFood.json();
         setFood(foodData);
 
-        if (foodData.donator_email === user.email) {
+        if (user && foodData.donator_email === user.email) {
           const resReq = await fetch(
             `http://localhost:3000/requests/food/${id}`
           );
@@ -141,11 +141,11 @@ const FoodDetails = () => {
             </div>
           </div>
 
-          {food.donator_email !== user.email && (
+          {user && food.donator_email !== user.email && (
             <RequestFoodModal food={food} />
           )}
 
-          {food.donator_email === user.email && (
+          {user && food.donator_email === user.email && (
             <div className="mt-8">
               <h3 className="text-xl font-bold mb-4 text-green-800 dark:text-green-400">
                 Food Requests

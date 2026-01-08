@@ -1,5 +1,6 @@
 import {
   createUserWithEmailAndPassword,
+  FacebookAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -13,6 +14,7 @@ import { AuthContext } from "./Authcontext";
 import { data } from "react-router-dom";
 
 const googleProvider = new GoogleAuthProvider();
+const facebookProvider=new FacebookAuthProvider();
 
 const AuthProvider = ({ children }) => {
   const [profile, setProfile] = useState({ bio: "" });
@@ -31,6 +33,11 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
+
+  const signInFacebook=async ()=>{
+    setLoading(true);
+    return signInWithPopup(auth,facebookProvider);
+  }
 
   const LogOut = () => {
     setLoading(true);
@@ -103,6 +110,7 @@ const AuthProvider = ({ children }) => {
     LogOut,
     updateUserProfile,
     profile,
+    signInFacebook,
   };
 
   return (

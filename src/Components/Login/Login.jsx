@@ -4,10 +4,14 @@ import { AuthContext } from "../../context/Authcontext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { FaFacebook } from "react-icons/fa";
 const Login = () => {
-  const { signInUser, signInGoogle } = useContext(AuthContext);
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { signInUser, signInGoogle, signInFacebook } = useContext(AuthContext);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -29,6 +33,16 @@ const Login = () => {
       setTimeout(() => navigate(from, { replace: true }), 1500);
     } catch (err) {
       toast.error("Google login failed! " + err.message);
+    }
+  };
+
+  const handleFacebookSignIn = async () => {
+    try {
+      await signInFacebook();
+      toast.success("Logged in with Facebook");
+      setTimeout(() => navigate(form, { replace: true }), 1500);
+    } catch (err) {
+      toast.error("Facebook login failed" + err.message);
     }
   };
 
@@ -79,10 +93,19 @@ const Login = () => {
             />
             Login with Google
           </button>
+          <button
+            onClick={handleFacebookSignIn}
+            className="btn bg-white dark:bg-gray-700 border dark:border-gray-600 mt-2 flex items-center justify-center w-full hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+          >
+          <FaFacebook className="w-5 h-5 mr-2" />  Login with Facebook
+          </button>
 
           <div className="mt-3 text-sm text-gray-700 dark:text-gray-300">
             <span>New user? </span>
-            <Link to="/register" className="link text-blue-600 dark:text-blue-400 hover:underline">
+            <Link
+              to="/register"
+              className="link text-blue-600 dark:text-blue-400 hover:underline"
+            >
               Register here
             </Link>
           </div>
