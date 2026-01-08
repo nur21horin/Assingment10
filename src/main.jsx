@@ -80,6 +80,7 @@ const router = createBrowserRouter([
           { path: "profile", element: <DashboardProfile /> },
           { path: "overview", element: <DashboardOverview /> },
           { path: "edit-food", element: <DashboardEditFoodModal /> },
+           { path: "add-foods", element: <AddFood /> },
         ],
       },
     ],

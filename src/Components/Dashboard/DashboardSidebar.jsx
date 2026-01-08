@@ -87,8 +87,8 @@ const DashboardSidebar = ({ open, setOpen }) => {
               icon: <Table size={20} />,
             },
             {
-              to: "/dashboard/edit-food",
-              label: "Edit Food",
+              to: "/dashboard/add-foods",
+              label: "Add Food",
               icon: <Pencil size={20} />,
             },
           ].map((item) => (
